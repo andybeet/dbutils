@@ -29,13 +29,18 @@ createString <- function(itemName,chosenItem,convertToCharacter,numChars) {
   } else if (is.numeric(chosenItem) && (convertToCharacter==FALSE)) {
     itemStr <-  paste0(" (",itemName," in (",toString(chosenItem),"))")
   } else { # not numeric
-    if (tolower(chosenItem)=="all"){
-      itemStr <-  NULL
-    } else {
-      itemStr <-  paste0(" (",itemName," in (",toString(chosenItem),"))")
+    if (length(chosenItem) == 1) {
+      if (tolower(chosenItem)=="all") {
+        itemStr <-  NULL
+      } else { # character string
+        str <- paste0("'", chosenItem, "'", collapse=", ")
+        itemStr <- paste0(" (",itemName," in (",str,"))")
+      }
+    } else { # character vector code
+      str <- paste0("'", chosenItem, "'", collapse=", ")
+      itemStr <- paste0(" (",itemName," in (",str,"))")
       #stop(paste0("Not coded for yet -- createString:",itemName," with ",chosenItem))
     }
-
   }
   return(itemStr)
 }
