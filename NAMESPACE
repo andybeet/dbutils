@@ -3,3 +3,4 @@
 export(connect_to_database)
 export(createString)
 export(createStringSpecies)
+export(create_sql)

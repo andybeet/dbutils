@@ -1,5 +1,20 @@
-# called by all functions to formal the call to the svdbs database
-#
+#' called by many functions from several db packages to convert the passed arguments to sql statements
+#' 
+#' utility function to create a SQL statement based on passed arguments
+#' 
+#' @param dataName Character or numeric. value of argument passed
+#' @param fieldName Character. Database fieldname name which has value = \code{dataName}
+#' @param fieldName2 Character. Alternative field name for string values of \code{dataName}
+#' @param dataType Character. Formatting for the \code{dataName} in the database
+#' @param defaultSqlStatement String. Select statement. (eg. "Select * from db")
+#' 
+#' @return String. SQL statement 
+#' 
+#' @examples
+#' \dontrun {
+#' create_sql(dataName = "all",fieldName="svspp", fieldname2= "comname", dataType = "%03d",defaultSqlStatement="select * from svdbs.svspecies_list")
+#' }
+#' @export
 
 create_sql <- function(dataName,fieldName,fieldName2,dataType,defaultSqlStatement) {
 
