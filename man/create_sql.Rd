@@ -2,7 +2,7 @@
 % Please edit documentation in R/create_sql.R
 \name{create_sql}
 \alias{create_sql}
-\title{called by many functions from several db packages to convert the passed arguments to sql statements}
+\title{called by many functions from several db packages to convert passed arguments to sql statements}
 \usage{
 create_sql(dataName, fieldName, fieldName2, dataType, defaultSqlStatement)
 }
@@ -24,7 +24,7 @@ String. SQL statement
 utility function to create a SQL statement based on passed arguments
 }
 \examples{
-\dontrun {
-create_sql(dataName = "all",fieldName="svspp", fieldname2= "comname", dataType = "\%03d",defaultSqlStatement="select * from svdbs.svspecies_list")
+\dontrun{
+create_sql(dataName = "all",fieldName="svspp", fieldname2= "comname", dataType = "\\\%03d",defaultSqlStatement="select * from svdbs.svspecies_list")
 }
 }

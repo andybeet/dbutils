@@ -32,9 +32,8 @@ connect_to_database  <-  function(server,uid){
   # connects to DB and catches errors and warnings
     chan <- tryCatch(
       {
-        con <- DBI::dbConnect(odbc::odbc(), dsn=server,uid=uid,pwd=pwd, timeout = 10)
-        #RODBC::odbcConnect(server,uid=uid,pwd=pwd)
-        #message(paste0("Successfully connected to Database: ",server))
+        chan <- DBI::dbConnect(odbc::odbc(), dsn=server,uid=uid,pwd=pwd, timeout = 10)
+        
       }, warning=function(w) {
         if (grepl("logon denied",w)) {message("logon to server failed - Check username and password")}
         if (grepl("locked",w)) {message("logon to server failed - Account may be locked")}
@@ -44,7 +43,7 @@ connect_to_database  <-  function(server,uid){
         message(paste0("Terminal error: ",e))
         return()
       }, finally = {
-
+        message(paste0("Successfully connected to Database: ",server))
       }
     )
   # returns

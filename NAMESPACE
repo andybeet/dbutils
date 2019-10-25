@@ -3,4 +3,5 @@
 export(connect_to_database)
 export(createString)
 export(createStringSpecies)
+export(createStringYear)
 export(create_sql)

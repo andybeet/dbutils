@@ -1,4 +1,4 @@
-#' called by many functions from several db packages to convert the passed arguments to sql statements
+#' called by many functions from several db packages to convert passed arguments to sql statements
 #' 
 #' utility function to create a SQL statement based on passed arguments
 #' 
@@ -11,8 +11,8 @@
 #' @return String. SQL statement 
 #' 
 #' @examples
-#' \dontrun {
-#' create_sql(dataName = "all",fieldName="svspp", fieldname2= "comname", dataType = "%03d",defaultSqlStatement="select * from svdbs.svspecies_list")
+#' \dontrun{
+#' create_sql(dataName = "all",fieldName="svspp", fieldname2= "comname", dataType = "\%03d",defaultSqlStatement="select * from svdbs.svspecies_list")
 #' }
 #' @export
 
