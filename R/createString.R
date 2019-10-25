@@ -1,22 +1,22 @@
-##' Utility function (Internal, not exported) to convert argument to strings
-##'
-##' inputs to get_ functions are required as strings when passed as a sql statement
-##' This function converts numeric inputs to character strings
-##'
-##' @param itemName Character string. Variable name as it exists in the data base
-##' @param chosenItem User input value of variable listed in itemName
-##' @param convertTocharacter Boolean. Should we convert the \code{chosenItem} to a character string (This depends on how the variable is declared in the database)
-##' @param numchars Numeric scalar. Number of characters to format the numeric \code{chosenItem} as.
-##'
-##' @return A charachter string
-##'
-##' @examples
-##' \dontrun{
-##' createString(itemName="area",area=503,convertToCharacter=TRUE,numChars=3)
-##' createString(itemName="species_itis",species,convertToCharacter=TRUE,numChars=6)
-##'
-##' }
-##'
+#' Utility function (Internal, not exported) to convert argument to strings
+#'
+#' inputs to get_ functions are required as strings when passed as a sql statement
+#' This function converts numeric inputs to character strings
+#'
+#' @param itemName Character string. Variable name as it exists in the data base
+#' @param chosenItem User input value of variable listed in itemName
+#' @param convertTocharacter Boolean. Should we convert the \code{chosenItem} to a character string (This depends on how the variable is declared in the database)
+#' @param numchars Numeric scalar. Number of characters to format the numeric \code{chosenItem} as.
+#'
+#' @return A charachter string
+#'
+#' @examples
+#' \dontrun{
+#' createString(itemName="area",area=503,convertToCharacter=TRUE,numChars=3)
+#' createString(itemName="species_itis",species,convertToCharacter=TRUE,numChars=6)
+#'
+#' }
+#'@export
 
 
 
