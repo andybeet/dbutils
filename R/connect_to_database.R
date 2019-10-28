@@ -30,22 +30,27 @@ connect_to_database  <-  function(server,uid){
   pwd <- get_pwd(server)
 
   # connects to DB and catches errors and warnings
-    chan <- tryCatch(
+   chan <- tryCatch(
       {
         chan <- DBI::dbConnect(odbc::odbc(), dsn=server,uid=uid,pwd=pwd, timeout = 10)
         
       }, warning=function(w) {
-        if (grepl("logon denied",w)) {message("logon to server failed - Check username and password")}
+        if (grepl("login denied",w)) {message("login to server failed - Check username and password")}
         if (grepl("locked",w)) {message("logon to server failed - Account may be locked")}
         message(paste0("Can not Connect to Database: ",server))
-        return()
+        return(NA)
       }, error=function(e) {
         message(paste0("Terminal error: ",e))
-        return()
+        return(NA)
       }, finally = {
-        message(paste0("Successfully connected to Database: ",server))
+
       }
     )
+   
+   if (isS4(chan)){
+     message(paste0("Successfully connected to Database: ",server))
+   }
+
   # returns
   return(chan)
 }
