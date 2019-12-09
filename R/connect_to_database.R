@@ -11,17 +11,17 @@
 #'
 #' @param server  name of the server
 #' @param uid  username of person with permissions
-#' @return Object inherited from \code{\link{DBIConnection}}. This object is used to connect
-#' to communicate with the database engine.
-#'
+#' 
+#' @return Object inherited from \link[DBI]{DBIConnection-class}. This object is used to connect
+#' to communicate with the database engine. (see \code{\link{connect_to_database}})
 #'
 #' @section Warning:
 #' 3 failed attempts and you will be locked out of the system.
-#' @seealso \code{\link{DBI}},\code{\link{odbc}}
+#' @seealso \code{\link{DBI}}, \code{\link{odbc}}
 #'
 #' @examples
 #' \dontrun{
-#' con <- connectToDatabase(server="name_of_server",uid="individuals_username")
+#' con <- connect_to_database(server="name_of_server",uid="individuals_username")
 #'}
 #' @export
 

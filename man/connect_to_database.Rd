@@ -12,8 +12,8 @@ connect_to_database(server, uid)
 \item{uid}{username of person with permissions}
 }
 \value{
-Object inherited from \code{\link{DBIConnection}}. This object is used to connect
-to communicate with the database engine.
+Object inherited from \link[DBI]{DBIConnection-class}. This object is used to connect
+to communicate with the database engine. (see \code{\link{connect_to_database}})
 }
 \description{
 A utility function enabling the user to connect to an internal database provided the user has permissions and
@@ -32,9 +32,9 @@ Note: if you use 32 bit Rstudio then you need a 32 bit client
 
 \examples{
 \dontrun{
-con <- connectToDatabase(server="name_of_server",uid="individuals_username")
+con <- connect_to_database(server="name_of_server",uid="individuals_username")
 }
 }
 \seealso{
-\code{\link{DBI}},\code{\link{odbc}}
+\code{\link{DBI}}, \code{\link{odbc}}
 }
