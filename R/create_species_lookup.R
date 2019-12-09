@@ -60,8 +60,15 @@ create_species_lookup <- function(channel,species="all",speciesType="NESPP3"){
   
   speciesTable <- dplyr::inner_join(speciesTable1,speciesTable2,by="NESPP4") %>% 
     dplyr::select(-NESPP4) %>%
+    dplyr::mutate(SCIENTIFIC_NAME = gsub("^\\s+|\\s+$", "",SCIENTIFIC_NAME)) %>%
+    dplyr::mutate(COMMON_NAME = gsub(", ","",COMMON_NAME)) %>%
     dplyr::distinct()
+  # cleaned up table. Remove blanks in common name
   
-  return(speciesTable)
+  
+  return(dplyr::as_tibble(speciesTable))
 }
+
+# trim leading and trailing whitespace
+#trim_blanks <- function (x) gsub("^\\s+|\\s+$", "", x)
  
