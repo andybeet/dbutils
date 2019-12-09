@@ -5,8 +5,8 @@
 #'
 #' @param channel an Object inherited from \link[DBI]{DBIConnection-class}. This object is used to connect
 #' to communicate with the database engine. (see \code{\link{connect_to_database}})
-#' @param species Character String. Either NESPP3, SVSPP, Species_itis
-#' @param speciesType Character string. Specifies which species code entere for \code{species}
+#' @param species Character String. Either NESPP3, SVSPP, Species_itis (not case sensitive)
+#' @param speciesType Character string. Type of species code entered for \code{species}. Default = "NESPP3"
 #' 
 #' @return Tibble:
 #' 

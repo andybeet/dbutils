@@ -10,9 +10,9 @@ create_species_lookup(channel, species = "all", speciesType = "NESPP3")
 \item{channel}{an Object inherited from \link[DBI]{DBIConnection-class}. This object is used to connect
 to communicate with the database engine. (see \code{\link{connect_to_database}})}
 
-\item{species}{Character String. Either NESPP3, SVSPP, Species_itis}
+\item{species}{Character String. Either NESPP3, SVSPP, Species_itis (not case sensitive)}
 
-\item{speciesType}{Character string. Specifies which species code entere for \code{species}}
+\item{speciesType}{Character string. Type of species code entered for \code{species}. Default = "NESPP3"}
 }
 \value{
 Tibble:
