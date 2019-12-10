@@ -25,19 +25,26 @@
 create_species_lookup <- function(channel,species="all",speciesType="NESPP3"){
   
   if ((tolower(speciesType) == "nespp3") | (tolower(speciesType) == "svspp")) {
+    
     # look in cfdbs.cfspp table for nespp3, nespp4, svspp, nafospp, then join with species_itis_ne
     # by nespp4 to obtain sci & com name
+    # first format to database type
     if (!is.character(species)) {
       speciesList <- sprintf(paste0("%03d"),species)
       speciesList <-  paste0("'",speciesList,"'",collapse=",")
     }
     
     sql2 <- paste0("select distinct NESPP3, NESPP4, NAFOSPP, SVSPP from cfdbs.cfspp where ",toupper(speciesType)," in (",speciesList,") order by NESPP4;")
-    speciesTable2 <- DBI::dbGetQuery(channel,sql2)
+    speciesTable2 <- DBI::dbGetQuery(channel,sql2) %>%
+      dplyr::mutate(SVSPP = gsub("^\\s+|\\s+$", "",SVSPP))
     
+    # use NESPP4s to select from species_itis_ne
     nespp4s <- paste0("'",speciesTable2$NESPP4,"'",collapse=",")
-    sql <- paste0("select distinct COMMON_NAME, SCIENTIFIC_NAME, SPECIES_ITIS, NESPP4 from cfdbs.species_itis_ne where NESPP4 in (",nespp4s,") order by NESPP4;")
-    speciesTable1 <- DBI::dbGetQuery(channel,sql)
+    sql <- paste0("select distinct COMMON_NAME, SCIENTIFIC_NAME, SPECIES_ITIS, NESPP4 from cfdbs.species_itis_ne where NESPP4 in (",nespp4s,")and NESPP4_FLAG = 1 order by NESPP4;")
+    speciesTable1 <- DBI::dbGetQuery(channel,sql) %>%
+      dplyr::mutate(SCIENTIFIC_NAME = gsub("^\\s+|\\s+$", "",SCIENTIFIC_NAME)) %>%
+      dplyr::mutate(COMMON_NAME = gsub(", ",",",COMMON_NAME))
+    
 
   } else if (tolower(speciesType) == "species_itis") {
     # convert numeric code to character
@@ -46,29 +53,24 @@ create_species_lookup <- function(channel,species="all",speciesType="NESPP3"){
       speciesList <-  paste0("'",speciesList,"'",collapse=",")
     }
     # look in species_itis_ne table and join with cfdbs.cfspp table by nespp4 to obtain other codes
-    sql <- paste0("select distinct COMMON_NAME, SCIENTIFIC_NAME, SPECIES_ITIS, NESPP4 from cfdbs.species_itis_ne where SPECIES_ITIS in (",speciesList,") order by SPECIES_ITIS, NESPP4;")
-    speciesTable1 <- DBI::dbGetQuery(channel,sql)
-    #speciesTable$NESPP3 <- substr(speciesTable$NESPP4,start=1,stop=3)
-    #speciesTable <- speciesTable %>% dplyr::select(COMMON_NAME, SCIENTIFIC_NAME, SPECIES_ITIS, NESPP3) %>% dplyr::distinct()
+    sql <- paste0("select distinct COMMON_NAME, SCIENTIFIC_NAME, SPECIES_ITIS, NESPP4 from cfdbs.species_itis_ne where SPECIES_ITIS in (",speciesList,") and NESPP4_FLAG = 1 order by SPECIES_ITIS, NESPP4;")
+    speciesTable1 <- DBI::dbGetQuery(channel,sql) %>% 
+      dplyr::mutate(SCIENTIFIC_NAME = gsub("^\\s+|\\s+$", "",SCIENTIFIC_NAME)) %>%
+      dplyr::mutate(COMMON_NAME = gsub(", ",",",COMMON_NAME))
+      
+    
     nespp4s <- paste0("'",speciesTable1$NESPP4,"'",collapse=",")
     sql2 <- paste0("select distinct NESPP3, NESPP4, NAFOSPP, SVSPP from cfdbs.cfspp where NESPP4 in (",nespp4s,") order by NESPP4;")
-    speciesTable2 <- DBI::dbGetQuery(channel,sql2)
+    speciesTable2 <- DBI::dbGetQuery(channel,sql2) %>% 
+      dplyr::mutate(SVSPP = gsub("^\\s+|\\s+$", "",SVSPP))
 
   } else {
     stop(paste0("Not coded for speciesType = ",speciesType))
   }
-  
+  # join 2 tables by NESPP4 then remove blanks  
   speciesTable <- dplyr::inner_join(speciesTable1,speciesTable2,by="NESPP4") %>% 
     dplyr::select(-NESPP4) %>%
-    dplyr::mutate(SCIENTIFIC_NAME = gsub("^\\s+|\\s+$", "",SCIENTIFIC_NAME)) %>%
-    dplyr::mutate(COMMON_NAME = gsub(", ","",COMMON_NAME)) %>%
     dplyr::distinct()
-  # cleaned up table. Remove blanks in common name
-  
-  
+
   return(dplyr::as_tibble(speciesTable))
 }
-
-# trim leading and trailing whitespace
-#trim_blanks <- function (x) gsub("^\\s+|\\s+$", "", x)
- 
