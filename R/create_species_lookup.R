@@ -24,6 +24,8 @@
 
 create_species_lookup <- function(channel,species="all",speciesType="NESPP3"){
   
+  message("This may take a while, we need to access multiple databases ...")
+  
   if (tolower(speciesType) == "nespp3"){
     
     # look in cfdbs.cfspp table for nespp3, nespp4, svspp, nafospp, then join with species_itis_ne
@@ -145,5 +147,5 @@ create_species_lookup <- function(channel,species="all",speciesType="NESPP3"){
   }
 
 
-  return(speciesTable)
+  return(list(data=speciesTable,sql1=sql1,sql2=sql2,sql3=sql3))
 }
