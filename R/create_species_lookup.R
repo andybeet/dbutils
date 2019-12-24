@@ -31,8 +31,8 @@ create_species_lookup <- function(channel,species="all",speciesType="NESPP3"){
     # first format to database type
     if (!is.character(species)) {
       species <- sprintf(paste0("%03d"),species)
-      species <-  paste0("'",species,"'",collapse=",")
     }
+    species <-  paste0("'",species,"'",collapse=",")
     
     sql1 <- paste0("select distinct NESPP3, NESPP4, NAFOSPP, SVSPP from cfdbs.cfspp where ",toupper(speciesType)," in (",species,") order by NESPP4;")   
     speciesTable1 <- DBI::dbGetQuery(channel,sql1) %>%
