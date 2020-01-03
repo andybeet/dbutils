@@ -24,7 +24,7 @@
 
 create_species_lookup <- function(channel,species="all",speciesType="NESPP3"){
   
-  message("This may take a while, we need to access multiple databases ...")
+  message("This may take a minute, we need to access multiple databases ...")
   
   if (tolower(speciesType) == "nespp3"){
     
