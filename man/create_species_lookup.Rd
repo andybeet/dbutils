@@ -4,7 +4,7 @@
 \alias{create_species_lookup}
 \title{Pair NESPP3, SVSPP3, Species_itis etc}
 \usage{
-create_species_lookup(channel, species = "all", speciesType = "NESPP3")
+create_species_lookup(channel, species = NULL, speciesType = "NESPP3")
 }
 \arguments{
 \item{channel}{an Object inherited from \link[DBI]{DBIConnection-class}. This object is used to connect

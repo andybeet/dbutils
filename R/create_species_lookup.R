@@ -22,8 +22,10 @@
 #' 
 #' @export
 
-create_species_lookup <- function(channel,species="all",speciesType="NESPP3"){
+create_species_lookup <- function(channel,species=NULL,speciesType="NESPP3"){
   
+  if (is.null(species)) return(NA)
+  missing <- list()
   message("This may take a minute, we need to access multiple databases ...")
   
   if (tolower(speciesType) == "nespp3"){
@@ -34,21 +36,37 @@ create_species_lookup <- function(channel,species="all",speciesType="NESPP3"){
     if (!is.character(species)) {
       species <- sprintf(paste0("%03d"),species)
     }
-    species <-  paste0("'",species,"'",collapse=",")
+    speciesToFind <-  paste0("'",species,"'",collapse=",")
     
-    sql1 <- paste0("select distinct NESPP3, NESPP4, NAFOSPP, SVSPP from cfdbs.cfspp where ",toupper(speciesType)," in (",species,") order by NESPP4;")   
+    # form sql query then execue
+    sql1 <- paste0("select distinct NESPP3, NESPP4, NAFOSPP, SVSPP from cfdbs.cfspp where ",toupper(speciesType)," in (",speciesToFind,") order by NESPP4;")   
     speciesTable1 <- DBI::dbGetQuery(channel,sql1) %>%
       dplyr::mutate(SVSPPcf = gsub("^\\s+|\\s+$", "",SVSPP)) %>%
-      dplyr::select(-SVSPP)
+      dplyr::select(-SVSPP) %>%
+      dplyr::distinct()
+    
+    # compare species passed vs species found to get list of missing species
+    missing[["cfdbs.cfspp"]] <-  setdiff(species,unique(speciesTable1$NESPP3))
     
     # use NESPP4s to select from species_itis_ne
     nespp4s <- paste0("'",speciesTable1$NESPP4,"'",collapse=",")
-    sql2 <- paste0("select distinct COMMON_NAME, SCIENTIFIC_NAME, SPECIES_ITIS, NESPP4 from cfdbs.species_itis_ne where NESPP4 in (",nespp4s,")and NESPP4_FLAG = 1 order by NESPP4;")
+    sql2 <- paste0("select distinct COMMON_NAME, SCIENTIFIC_NAME, SPECIES_ITIS, NESPP4 from cfdbs.species_itis_ne where NESPP4 in (",nespp4s,") and NESPP4_FLAG = 1 order by NESPP4;") #
     speciesTable2 <- DBI::dbGetQuery(channel,sql2) %>%
       dplyr::mutate(SCIENTIFIC_NAME = gsub("^\\s+|\\s+$", "",SCIENTIFIC_NAME)) %>%
-      dplyr::mutate(COMMON_NAME = gsub(", ",",",COMMON_NAME))
-    
-    sciNames <- paste0("'",speciesTable2$SCIENTIFIC_NAME,"'",collapse=",")
+      dplyr::mutate(COMMON_NAME = gsub(", ",",",COMMON_NAME)) %>%
+      dplyr::distinct()
+
+    # compare species in table1 vs species found in table 2 to get missing species
+    missing_nespp4s <-  setdiff(unique(speciesTable1$NESPP4),unique(speciesTable2$NESPP4))
+    missing_nespp3s <- unique(substring(missing_nespp4s,1,3))
+    # select nespp3s missing from species_itis_ne
+    missing[["cfdbs.species_itis_ne"]] <- speciesTable1 %>%
+      dplyr::filter(NESPP3 %in% missing_nespp3s) %>%
+      dplyr::count(NESPP3) %>% 
+      dplyr::filter(n==1) %>%
+      dplyr::select(NESPP3)
+
+    sciNames <- paste0("'",unique(speciesTable2$SCIENTIFIC_NAME),"'",collapse=",")
 
     # use sci names to get SVSPP from svdbs
     sql3 <- paste0("select distinct COMNAME, SCINAME, SVSPP from svdbs.svspecies_list where SCINAME in (",sciNames,") order by SVSPP;")
@@ -56,22 +74,35 @@ create_species_lookup <- function(channel,species="all",speciesType="NESPP3"){
       dplyr::rename(SCIENTIFIC_NAME=SCINAME) %>%
       dplyr::mutate(SVSPPsv = SVSPP) %>%
       dplyr::select(-SVSPP)
+ 
+    # compare species passed vs species found to get missing species
+    missing[["svdbs.svsspecies_list"]] <-  setdiff(unique(speciesTable2$SCIENTIFIC_NAME),unique(speciesTable3$SCIENTIFIC_NAME))
+    
+    #missing$ <-  setdiff(unique(speciesTable2$NESPP3),unique(speciesTable3$NESPP3))
+    
+        
+    # Join tables -------------------------------------------------------------
+    #return(list(speciesTable1=speciesTable1,speciesTable2=speciesTable2,speciesTable3=speciesTable3,missing=missing))
     
     # join 2 tables by NESPP4
     speciesTable <- dplyr::inner_join(speciesTable1,speciesTable2,by="NESPP4") %>% 
-      dplyr::select(-NESPP4)
+      dplyr::select(-NESPP4) %>% 
+      dplyr::distinct()
+
     # join with svdbs
-    speciesTable <- dplyr::inner_join(speciesTable,speciesTable3,by="SCIENTIFIC_NAME") %>%
+    # preserve all nespp3 codes passed as argument
+    speciesTable <- dplyr::left_join(speciesTable,speciesTable3,by="SCIENTIFIC_NAME") %>%
       dplyr::distinct() %>%
       dplyr::select(NESPP3,NAFOSPP,SVSPPcf,SVSPPsv,COMMON_NAME,COMNAME,SCIENTIFIC_NAME,SPECIES_ITIS) %>%
       dplyr::arrange(NESPP3) %>%
       dplyr::as_tibble()
-    
+
+
   } else if  (tolower(speciesType) == "svspp") {
     # first format to database type svspp are numeric
-    species <-  paste0(as.numeric(species),collapse=",")
+    speciesToFind <-  paste0(as.numeric(species),collapse=",")
 
-    sql1 <- paste0("select distinct COMNAME, SCINAME, SVSPP from svdbs.svspecies_list where SVSPP in (",species,") order by SVSPP;")
+    sql1 <- paste0("select distinct COMNAME, SCINAME, SVSPP from svdbs.svspecies_list where SVSPP in (",speciesToFind,") order by SVSPP;")
 
     speciesTable1 <- DBI::dbGetQuery(channel,sql1) %>%
       dplyr::rename(SCIENTIFIC_NAME=SCINAME) %>%
@@ -106,12 +137,12 @@ create_species_lookup <- function(channel,species="all",speciesType="NESPP3"){
   
   } else if (tolower(speciesType) == "species_itis") {
     # convert numeric code to character
-    species <- sprintf(paste0("%06d"),as.numeric(species))
-    species <-  paste0("'",species,"'",collapse=",")
+    speciesToFind <- sprintf(paste0("%06d"),as.numeric(species))
+    speciesToFind <-  paste0("'",speciesToFind,"'",collapse=",")
     
     
     # look in species_itis_ne table and join with cfdbs.cfspp table by nespp4 to obtain other codes
-    sql <- paste0("select distinct COMMON_NAME, SCIENTIFIC_NAME, SPECIES_ITIS, NESPP4 from cfdbs.species_itis_ne where SPECIES_ITIS in (",species,") and NESPP4_FLAG = 1 order by NESPP4;")
+    sql <- paste0("select distinct COMMON_NAME, SCIENTIFIC_NAME, SPECIES_ITIS, NESPP4 from cfdbs.species_itis_ne where SPECIES_ITIS in (",speciesToFind,") and NESPP4_FLAG = 1 order by NESPP4;")
     speciesTable1 <- DBI::dbGetQuery(channel,sql) %>% 
       dplyr::mutate(SCIENTIFIC_NAME = gsub("^\\s+|\\s+$", "",SCIENTIFIC_NAME)) %>%
       dplyr::mutate(COMMON_NAME = gsub(", ",",",COMMON_NAME))
