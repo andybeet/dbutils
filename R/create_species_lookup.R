@@ -46,7 +46,7 @@ create_species_lookup <- function(channel,species=NULL,speciesType="NESPP3"){
       dplyr::distinct()
     
     # compare species passed vs species found to get list of missing species
-    missing[["cfdbs.cfspp"]] <-  setdiff(species,unique(speciesTable1$NESPP3))
+    missing[["cfdbs.cfspp"]] <- tibble::enframe(setdiff(species,unique(speciesTable1$NESPP3)),name=NULL,value="NESPP3")
     
     # use NESPP4s to select from species_itis_ne
     nespp4s <- paste0("'",speciesTable1$NESPP4,"'",collapse=",")
@@ -178,5 +178,5 @@ create_species_lookup <- function(channel,species=NULL,speciesType="NESPP3"){
   }
 
 
-  return(list(data=speciesTable,sql1=sql1,sql2=sql2,sql3=sql3))
+  return(list(data=speciesTable,sql1=sql1,sql2=sql2,sql3=sql3,missing=missing))
 }
