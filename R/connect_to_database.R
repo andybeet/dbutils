@@ -27,7 +27,8 @@
 
 connect_to_database  <-  function(server,uid){
   # calls function for user to enter password
-  pwd <- get_pwd(server)
+  pwd <- getPass::getPass(msg=paste0("Enter the password for user ",uid," on server (",server,"):"),forcemask = FALSE)
+  
 
   # connects to DB and catches errors and warnings
    chan <- tryCatch(
@@ -49,15 +50,11 @@ connect_to_database  <-  function(server,uid){
    
    if (isS4(chan)){
      message(paste0("Successfully connected to Database: ",server))
+   } else {
+     message(paste0("NOT sucessfully connected to Database: ",server,". You attemptted to connect using username: ",uid,". Three incorrect password attempts will lock your account and you will need DMS to reset your password."))
    }
 
   # returns
   return(chan)
 }
 
-#getpassword
-
-get_pwd <- function(server){
-  pwd <- getPass::getPass(msg=paste0("Enter your password for ",server,":"),forcemask = FALSE)
-  return(pwd)
-}
