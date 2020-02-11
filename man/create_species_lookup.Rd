@@ -15,10 +15,14 @@ to communicate with the database engine. (see \code{\link{connect_to_database}})
 \item{speciesType}{Character string. Type of species code entered for \code{species}. Default = "NESPP3"}
 }
 \value{
-Tibble:
+A list is returned containing the result of the data pull as well as the sql statements used in the data pulls and a list of missing species codes, names, that were not present:
 
-The number of rows = the length of \code{species} with columns
-COMMON_NAME, SCIENTIFIC_NAME, SPECIES_ITIS, NESPP3, NAFOSPP, SVSPP
+\item{data}{Tibble. TEach row represents a species with columns NESPP3, NAFOSPP, SVSPPcf, SVSPPsv, COMMON_NAME, COMNAME, SCIENTIFIC_NAME, SPECIES_ITIS}
+\item{sql1}{Character string. sql statement used in first table}
+\item{sql2}{Character string. sql statement used in second table}
+\item{sql3}{Character string. sql statement used in third table}
+\item{missing}{List. Codes not found in respective tables}
+\item{lookupOrder}{Character string. The order in which the tables were accessed. Compare with the sqlx output}
 }
 \description{
 Create a table with all species infomation across databases. 
@@ -27,7 +31,19 @@ Combine  NESPP3, SVSPP3, species_itis, common name and scientific name
 \section{Database tables used}{
 
 
-Two tables are used to compile infomation. cfdbs.cfspp and cfdbs.species_itis_ne.
-The resulting tables are then joined.
+Three tables are used to compile infomation:
+
+cfdbs.cfspp and species_itis_ne and svdbs.svspecies_list. The resulting tables are then joined.
+
+The order in which these tables are accessed depends on \code{speciesType}. For example,
+\code{speciesType = "NESPP3"}
+
+1. cfdbs.cfssp is accessed and NESPP3, NESPP4, NAFOSPP, SVSPP are pulled.
+
+2. cfdbs.species_itis_ne is accessed using the NESPP4 codes found in step 1 and COMMON_NAME, SCIENTIFIC_NAME, SPECIES_ITIS, NESPP4 are pulled.
+
+3. svdbs.spsvspecies_list is accessed using the SCIENTIFIC_NAME codes found in step2 and COMNAME, SCINAME, SVSPP are pulled.
+
+4. The tables are then joined
 }
 
