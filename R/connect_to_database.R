@@ -11,6 +11,7 @@
 #'
 #' @param server  name of the server
 #' @param uid  username of person with permissions
+#' @param quiet Boolean. Suppress successful connection message. 
 #' 
 #' @return Object inherited from \link[DBI]{DBIConnection-class}. This object is used to connect
 #' to communicate with the database engine. (see \code{\link{connect_to_database}})
@@ -25,7 +26,7 @@
 #'}
 #' @export
 
-connect_to_database  <-  function(server,uid){
+connect_to_database  <-  function(server,uid,quiet=F){
   # calls function for user to enter password
   pwd <- getPass::getPass(msg=paste0("Enter the password for user ",uid," on server (",server,"):"),forcemask = FALSE)
   
@@ -48,13 +49,17 @@ connect_to_database  <-  function(server,uid){
       }
     )
    
-   if (isS4(chan)){
-     message(paste0("Successfully connected to Database: ",server))
-   } else {
-     message(paste0("NOT sucessfully connected to Database: ",server,". You attemptted to connect using username: ",uid,". Three incorrect password attempts will lock your account and you will need DMS to reset your password."))
-   }
-
-  # returns
+   
+     if (isS4(chan) & (!quiet)){
+       message(paste0("Successfully connected to Database: ",server))
+     } else if (isS4(chan) & (quiet)) {
+       # no message
+     } else {
+       message(paste0("NOT sucessfully connected to Database: ",server,". You attemptted to connect using username: ",uid,". Three incorrect password attempts will lock your account and you will need DMS to reset your password."))
+     }
+   
+   
+  # returns connection object
   return(chan)
 }
 

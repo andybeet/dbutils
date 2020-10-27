@@ -4,12 +4,14 @@
 \alias{connect_to_database}
 \title{Connect to an internal NEFSC database.}
 \usage{
-connect_to_database(server, uid)
+connect_to_database(server, uid, quiet = F)
 }
 \arguments{
 \item{server}{name of the server}
 
 \item{uid}{username of person with permissions}
+
+\item{quiet}{Boolean. Suppress successful connection message.}
 }
 \value{
 Object inherited from \link[DBI]{DBIConnection-class}. This object is used to connect

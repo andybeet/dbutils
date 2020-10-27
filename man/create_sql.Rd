@@ -25,6 +25,6 @@ utility function to create a SQL statement based on passed arguments
 }
 \examples{
 \dontrun{
-create_sql(dataName = "all",fieldName="svspp", fieldname2= "comname", dataType = "\\\%03d",defaultSqlStatement="select * from svdbs.svspecies_list")
+create_sql(dataName = "all",fieldName="svspp", fieldname2= "comname", dataType = "\\%03d",defaultSqlStatement="select * from svdbs.svspecies_list")
 }
 }
