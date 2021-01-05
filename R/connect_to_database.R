@@ -9,8 +9,8 @@
 #' Note: if you use 32 bit Rstudio then you need a 32 bit client
 #'
 #'
-#' @param server  name of the server
-#' @param uid  username of person with permissions
+#' @param server Character string. Name of the server
+#' @param uid  Character string. Username of person with permissions
 #' @param quiet Boolean. Suppress successful connection message. 
 #' 
 #' @return Object inherited from \link[DBI]{DBIConnection-class}. This object is used to connect
