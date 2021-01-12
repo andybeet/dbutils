@@ -5,12 +5,12 @@
 #'
 #' @param channel an Object inherited from \link[DBI]{DBIConnection-class}. This object is used to connect
 #' to communicate with the database engine. (see \code{\link{connect_to_database}})
-#' @param species Character String. Either NESPP3, SVSPP, Species_itis (not case sensitive)
+#' @param species Character String or numeric. Either NESPP3, SVSPP, Species_itis (not case sensitive)
 #' @param speciesType Character string. Type of species code entered for \code{species}. Default = "NESPP3"
 #' 
 #' @return A list is returned containing the result of the data pull as well as the sql statements used in the data pulls and a list of missing species codes, names, that were not present:
 #' 
-#' \item{data}{Tibble. TEach row represents a species with columns NESPP3, NAFOSPP, SVSPPcf, SVSPPsv, COMMON_NAME, COMNAME, SCIENTIFIC_NAME, SPECIES_ITIS}
+#' \item{data}{Tibble. Each row represents a species with columns NESPP3, NAFOSPP, SVSPPcf, SVSPPsv, COMMON_NAME, COMNAME, SCIENTIFIC_NAME, SPECIES_ITIS}
 #' \item{sql1}{Character string. sql statement used in first table}
 #' \item{sql2}{Character string. sql statement used in second table}
 #' \item{sql3}{Character string. sql statement used in third table}
