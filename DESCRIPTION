@@ -17,4 +17,5 @@ Imports:
     magrittr,
     dplyr,
     getPass,
-    DBI
+    DBI,
+    odbc
