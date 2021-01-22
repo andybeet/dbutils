@@ -5,7 +5,7 @@
 #' @return the function call
 #'
 #'
-#'@noRd
+#'@export
 
 capture_function_call <- function(...) {
   call <- evalq(match.call(expand.dots = FALSE), parent.frame(1))
