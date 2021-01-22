@@ -1,14 +1,13 @@
-#' Captures function call as string
+#' Captures function call
 #'
-#' A function call and its arguments, including default arguments, are captured and returned
-#' 
-#' @return String
+#' A function call and its arguments, including default arguments, are captured and returned as class call
+#'
+#' @return the function call
 #'
 #'
-#'
-#' @export
+#'@noRd
 
-function_call_to_string <- function(...) {
+capture_function_call <- function(...) {
   call <- evalq(match.call(expand.dots = FALSE), parent.frame(1))
   formals <- evalq(formals(), parent.frame(1))
   
