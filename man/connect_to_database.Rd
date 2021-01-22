@@ -7,9 +7,9 @@
 connect_to_database(server, uid, quiet = F)
 }
 \arguments{
-\item{server}{name of the server}
+\item{server}{Character string. Name of the server}
 
-\item{uid}{username of person with permissions}
+\item{uid}{Character string. Username of person with permissions}
 
 \item{quiet}{Boolean. Suppress successful connection message.}
 }
