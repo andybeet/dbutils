@@ -10,9 +10,9 @@ create_species_lookup(channel, species = NULL, speciesType = "NESPP3")
 \item{channel}{an Object inherited from \link[DBI]{DBIConnection-class}. This object is used to connect
 to communicate with the database engine. (see \code{\link{connect_to_database}})}
 
-\item{species}{Character String or numeric. Either NESPP3, SVSPP, Species_itis (not case sensitive)}
+\item{species}{Character String or numeric. Either NESPP3, SVSPP, Species_itis codes}
 
-\item{speciesType}{Character string. Type of species code entered for \code{species}. Default = "NESPP3"}
+\item{speciesType}{Character string. Type of species code entered for \code{species}. Either NESPP3, SVSPP, Species_itis (not case sensitive). Default = "NESPP3"}
 }
 \value{
 A list is returned containing the result of the data pull as well as the sql statements used in the data pulls and a list of missing species codes, names, that were not present:
