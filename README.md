@@ -1,8 +1,8 @@
 # dbutils
 
 ![Install on
-windows](https://github.com/NOAA-EDAB/dbutils/workflows/Install%20on%20windows/badge.svg)
-![gitleaks](https://github.com/NOAA-EDAB/dbutils/workflows/gitleaks/badge.svg)
+windows](https://github.com/andybeet/dbutils/workflows/Install%20on%20windows/badge.svg)
+![gitleaks](https://github.com/andybeet/dbutils/workflows/gitleaks/badge.svg)
 
 Collection of utility function to aid in database manipulation
 
