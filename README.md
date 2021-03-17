@@ -6,6 +6,12 @@ windows](https://github.com/andybeet/dbutils/workflows/Install%20on%20windows/ba
 
 Collection of utility function to aid in database manipulation
 
+## Usage
+
+### Installation
+
+`remotes::install_github("andybeet/dbutils")`
+
 ## Contact
 
 | [andybeet](https://github.com/andybeet)                                                         |
