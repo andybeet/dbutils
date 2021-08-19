@@ -11,9 +11,9 @@ createString(itemName, chosenItem, convertToCharacter, numChars)
 
 \item{chosenItem}{User input value of variable listed in itemName}
 
-\item{numChars}{Numeric scalar. Number of characters to format the numeric \code{chosenItem} as.}
+\item{convertToCharacter}{Boolean. Should we convert the \code{chosenItem} to a character string (This depends on how the variable is declared in the database)}
 
-\item{convertTocharacter}{Boolean. Should we convert the \code{chosenItem} to a character string (This depends on how the variable is declared in the database)}
+\item{numChars}{Numeric scalar. Number of characters to format the numeric \code{chosenItem} as.}
 }
 \value{
 A charachter string
