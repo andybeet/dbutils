@@ -6,9 +6,7 @@ Authors@R:
            family = "Beet",
            role = c("aut", "cre"),
            email = "andrew.beet@noaa.gov")
-Description: Provides tools for database connectivity and 
-  miscellaneous functions to convert passed arguments to SQL statements.
-  Functions are used across several db packages
+Description: Provides tools for database connectivity and miscellaneous functions to convert passed arguments to SQL statements.
 License: file LICENSE
 Encoding: UTF-8
 LazyData: true
