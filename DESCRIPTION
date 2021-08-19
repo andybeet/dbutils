@@ -16,4 +16,5 @@ Imports:
     dplyr,
     getPass,
     DBI,
-    odbc
+    odbc,
+    tibble
