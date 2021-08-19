@@ -1,2 +1,5 @@
 ^dbutils\.Rproj$
 ^\.Rproj\.user$
+
+# folders
+other
