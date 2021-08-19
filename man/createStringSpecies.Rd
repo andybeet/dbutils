@@ -11,9 +11,9 @@ createStringSpecies(itemName, chosenItem, convertToCharacter, numChars)
 
 \item{chosenItem}{User input value of variable listed in itemName}
 
-\item{convertTocharacter}{Boolean. Should we convert the \code{chosenItem} to a character string (This depends on how the variable is declared in the database)}
+\item{numChars}{Numeric scalar. Number of characters to format the numeric \code{chosenItem} as.}
 
-\item{numchars}{Numeric scalar. Number of characters to format the numeric \code{chosenItem} as.}
+\item{convertTocharacter}{Boolean. Should we convert the \code{chosenItem} to a character string (This depends on how the variable is declared in the database)}
 }
 \value{
 A charachter string

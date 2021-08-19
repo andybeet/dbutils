@@ -4,8 +4,7 @@
 #'
 #' @param channel an Object inherited from \link[DBI]{DBIConnection-class}. This object is used to connect
 #' to communicate with the database engine. (see \code{\link{connect_to_database}})
-
-#'@param NESPP$s Numerical Vector. NESPP4 codes used in an sql query
+#'@param NESPP4s Numerical Vector. NESPP4 codes used in an sql query
 #'@param maxItems Numeric scalar. Maximum number of items in a single sql query
 #'
 #'@return List

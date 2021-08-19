@@ -7,7 +7,7 @@
 #' @param itemName Character string. Variable name as it exists in the data base
 #' @param chosenItem User input value of variable listed in itemName
 #' @param convertTocharacter Boolean. Should we convert the \code{chosenItem} to a character string (This depends on how the variable is declared in the database)
-#' @param numchars Numeric scalar. Number of characters to format the numeric \code{chosenItem} as.
+#' @param numChars Numeric scalar. Number of characters to format the numeric \code{chosenItem} as.
 #'
 #' @return A charachter string
 #'

@@ -10,9 +10,9 @@ split_sql_query_nespp3(channel, NESPP4s, maxItems = 900)
 \item{channel}{an Object inherited from \link[DBI]{DBIConnection-class}. This object is used to connect
 to communicate with the database engine. (see \code{\link{connect_to_database}})}
 
-\item{maxItems}{Numeric scalar. Maximum number of items in a single sql query}
+\item{NESPP4s}{Numerical Vector. NESPP4 codes used in an sql query}
 
-\item{NESPP$s}{Numerical Vector. NESPP4 codes used in an sql query}
+\item{maxItems}{Numeric scalar. Maximum number of items in a single sql query}
 }
 \value{
 List

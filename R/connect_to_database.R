@@ -1,7 +1,7 @@
 #' Connect to an internal NEFSC database.
 #'
-#'A utility function enabling the user to connect to an internal database provided the user has permissions and
-#'posesses a valid username and password. A popup window is used for secure password enntry
+#' A utility function enabling the user to connect to an internal database provided the user has permissions and
+#' posesses a valid username and password. A popup window is used for secure password enntry
 #'
 #' For this to work, you need an oracle client installed.
 #' Tested with Oracle instantClient_12_2 installed

@@ -29,7 +29,7 @@ createTonnageString <- function(itemName,chosenItem){
       }
     } else {# append last one
     }
-    itemStr <- paste0(itemStr,itemName," like \'",tail(chosenItem,1),"%\')")
+    itemStr <- paste0(itemStr,itemName," like \'",utils::tail(chosenItem,1),"%\')")
   } else { #Fleet
     if (tolower(chosenItem) == "all") {
       itemStr <- NULL
