@@ -1,12 +1,15 @@
 Package: dbutils
 Title: Utility package for db connectivity and functionality
-Version: 0.1.0
+Version: 0.1.1
 Authors@R: 
     person(given = "Andy",
            family = "Beet",
            role = c("aut", "cre"),
-           email = "andrew.beet@noaa.gov")
+           email = "andrew.beet@noaa.gov",
+           comment = c(ORCID = "0000-0001-8270-7090"))
 Description: Provides tools for database connectivity and miscellaneous functions to convert passed arguments to SQL statements.
+URL: https://github.com/andybeet/dbutils
+BugReports: https://github.com/andybeet/dbutils/issues
 License: file LICENSE
 Encoding: UTF-8
 LazyData: true
