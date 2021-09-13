@@ -17,4 +17,5 @@ Imports:
     getPass,
     DBI,
     odbc,
-    tibble
+    tibble,
+    rlang
