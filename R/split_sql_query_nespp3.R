@@ -11,6 +11,7 @@
 #'\item{sql}{the sql statements}
 #'\item{speciesTable}{Resulting table from concatenating the sql calls}
 #'
+#' @importFrom rlang .data
 #'
 
 
@@ -36,8 +37,8 @@ split_sql_query_nespp3 <- function(channel,NESPP4s,maxItems=900) {
 
     sqlpart <- paste0("select distinct COMMON_NAME, SCIENTIFIC_NAME, SPECIES_ITIS, NESPP4 from cfdbs.species_itis_ne where NESPP4 in (",nespp4s,") and NESPP4_FLAG = 1 order by NESPP4;") 
     speciesTablepart <- DBI::dbGetQuery(channel,sqlpart) %>%
-      dplyr::mutate(SCIENTIFIC_NAME = gsub("^\\s+|\\s+$", "",SCIENTIFIC_NAME)) %>%
-      dplyr::mutate(COMMON_NAME = gsub(", ",",",COMMON_NAME)) %>%
+      dplyr::mutate(SCIENTIFIC_NAME = gsub("^\\s+|\\s+$", "",.data$SCIENTIFIC_NAME)) %>%
+      dplyr::mutate(COMMON_NAME = gsub(", ",",",.data$COMMON_NAME)) %>%
       dplyr::distinct()
     
     sql[[inum]] <- sqlpart
