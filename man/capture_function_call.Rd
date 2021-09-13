@@ -6,6 +6,9 @@
 \usage{
 capture_function_call(...)
 }
+\arguments{
+\item{...}{F}
+}
 \value{
 the function call
 }
