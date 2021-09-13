@@ -2,9 +2,14 @@
 % Please edit documentation in R/create_species_lookup.R
 \name{create_species_lookup}
 \alias{create_species_lookup}
-\title{Pair NESPP3, SVSPP3, Species_itis etc}
+\title{Pair NESPP3, SVSPP3, Species_itis}
 \usage{
-create_species_lookup(channel, species = NULL, speciesType = "NESPP3")
+create_species_lookup(
+  channel,
+  species = NULL,
+  speciesType = "NESPP3",
+  skipType = NULL
+)
 }
 \arguments{
 \item{channel}{an Object inherited from \link[DBI]{DBIConnection-class}. This object is used to connect
@@ -13,6 +18,9 @@ to communicate with the database engine. (see \code{\link{connect_to_database}})
 \item{species}{Character String or numeric. Either NESPP3, SVSPP, Species_itis codes}
 
 \item{speciesType}{Character string. Type of species code entered for \code{species}. Either NESPP3, SVSPP, Species_itis (not case sensitive). Default = "NESPP3"}
+
+\item{skipType}{Character string. species Type to ignore in join. For example maybe only want to join SVSPP with ITIS. Same as \code{speciesType}
+(Default = NULL, all three codes are joined)}
 }
 \value{
 A list is returned containing the result of the data pull as well as the sql statements used in the data pulls and a list of missing species codes, names, that were not present:
@@ -25,13 +33,13 @@ A list is returned containing the result of the data pull as well as the sql sta
 \item{lookupOrder}{Character string. The order in which the tables were accessed. Compare with the sqlx output}
 }
 \description{
-Create a table with all species infomation across databases. 
-Combine  NESPP3, SVSPP3, species_itis, common name and scientific name
+Create a table with all species information across databases. 
+Combine  NESPP3, SVSPP3, species_itis, common name and scientific name.
 }
 \section{Database tables used}{
 
 
-Three tables are used to compile infomation:
+Three tables are used to compile information:
 
 cfdbs.cfspp and species_itis_ne and svdbs.svspecies_list. The resulting tables are then joined.
 

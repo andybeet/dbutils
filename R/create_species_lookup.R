@@ -1,12 +1,14 @@
-#' Pair NESPP3, SVSPP3, Species_itis etc
+#' Pair NESPP3, SVSPP3, Species_itis 
 #'
-#' Create a table with all species infomation across databases. 
-#' Combine  NESPP3, SVSPP3, species_itis, common name and scientific name
+#' Create a table with all species information across databases. 
+#' Combine  NESPP3, SVSPP3, species_itis, common name and scientific name.
 #'
 #' @param channel an Object inherited from \link[DBI]{DBIConnection-class}. This object is used to connect
 #' to communicate with the database engine. (see \code{\link{connect_to_database}})
 #' @param species Character String or numeric. Either NESPP3, SVSPP, Species_itis codes
 #' @param speciesType Character string. Type of species code entered for \code{species}. Either NESPP3, SVSPP, Species_itis (not case sensitive). Default = "NESPP3"
+#' @param skipType Character string. species Type to ignore in join. For example maybe only want to join SVSPP with ITIS. Same as \code{speciesType}
+#' (Default = NULL, all three codes are joined)
 #' 
 #' @return A list is returned containing the result of the data pull as well as the sql statements used in the data pulls and a list of missing species codes, names, that were not present:
 #' 
@@ -19,7 +21,7 @@
 #'  
 #' @section Database tables used:
 #' 
-#' Three tables are used to compile infomation:
+#' Three tables are used to compile information:
 #' 
 #' cfdbs.cfspp and species_itis_ne and svdbs.svspecies_list. The resulting tables are then joined.
 #' 
@@ -35,12 +37,16 @@
 #' 4. The tables are then joined 
 #' 
 #' @importFrom magrittr "%>%"
+#' @importFrom rlang .data
 #' 
 #' @export
 
-create_species_lookup <- function(channel,species=NULL,speciesType="NESPP3"){
+create_species_lookup <- function(channel,species=NULL,speciesType="NESPP3", skipType = NULL){
   
-  if (is.null(species)) return(NA)
+  if (is.null(species)){
+    message("No species codes were selected")
+    return(NA)
+  } 
   missing <- list()
   message("This may take a minute, we need to access multiple databases ...")
   
@@ -57,8 +63,8 @@ create_species_lookup <- function(channel,species=NULL,speciesType="NESPP3"){
     # form sql query then execue
     sql1 <- paste0("select distinct NESPP3, NESPP4, NAFOSPP, SVSPP from cfdbs.cfspp where ",toupper(speciesType)," in (",speciesToFind,") order by NESPP4;")   
     speciesTable1 <- DBI::dbGetQuery(channel,sql1) %>%
-      dplyr::mutate(SVSPPcf = gsub("^\\s+|\\s+$", "",SVSPP)) %>%
-      dplyr::select(-SVSPP) %>%
+      dplyr::mutate(SVSPPcf = gsub("^\\s+|\\s+$", "",.data$SVSPP)) %>%
+      dplyr::select(-.data$SVSPP) %>%
       dplyr::distinct()
     
     # compare species passed vs species found to get list of missing species
@@ -75,40 +81,47 @@ create_species_lookup <- function(channel,species=NULL,speciesType="NESPP3"){
     missing_nespp3s <- unique(substring(missing_nespp4s,1,3))
     # select nespp3s missing from species_itis_ne
     missing[["cfdbs.species_itis_ne"]] <- speciesTable1 %>%
-      dplyr::filter(NESPP3 %in% missing_nespp3s) %>%
-      dplyr::count(NESPP3) %>% 
-      dplyr::filter(n==1) %>%
-      dplyr::select(NESPP3)
+      dplyr::filter(.data$NESPP3 %in% missing_nespp3s) %>%
+      dplyr::count(.data$NESPP3) %>% 
+      dplyr::filter(.data$n==1) %>%
+      dplyr::select(.data$NESPP3)
 
     sciNames <- paste0("'",unique(speciesTable2$SCIENTIFIC_NAME),"'",collapse=",")
 
-    # use sci names to get SVSPP from svdbs
-    sql3 <- paste0("select distinct COMNAME, SCINAME, SVSPP from svdbs.svspecies_list where SCINAME in (",sciNames,") order by SVSPP;")
-    speciesTable3 <- DBI::dbGetQuery(channel,sql3) %>%
-      dplyr::rename(SCIENTIFIC_NAME=SCINAME) %>%
-      dplyr::mutate(SVSPPsv = SVSPP) %>%
-      dplyr::select(-SVSPP)
- 
-    # compare species passed vs species found to get missing species
-    missing[["svdbs.svsspecies_list"]] <-  setdiff(unique(speciesTable2$SCIENTIFIC_NAME),unique(speciesTable3$SCIENTIFIC_NAME))
-    
-    # Join tables -------------------------------------------------------------
-
     # join 2 tables by NESPP4
     speciesTable <- dplyr::inner_join(speciesTable1,speciesTable2,by="NESPP4") %>% 
-      dplyr::select(-NESPP4) %>% 
+      dplyr::select(-.data$NESPP4) %>% 
       dplyr::distinct()
-
-    # join with svdbs
-    # preserve all nespp3 codes passed as argument
-    speciesTable <- dplyr::left_join(speciesTable,speciesTable3,by="SCIENTIFIC_NAME") %>%
-      dplyr::distinct() %>%
-      dplyr::select(NESPP3,NAFOSPP,SVSPPcf,SVSPPsv,COMMON_NAME,COMNAME,SCIENTIFIC_NAME,SPECIES_ITIS) %>%
-      dplyr::arrange(NESPP3) %>%
-      dplyr::as_tibble()
     
-    lookupOrder <- "cfdbs.cfspp (sql1) -> cfdbs.species_itis_ne (sql2) -> svspp.svspecies_list (sql3)"
-
+    if (!is.null(skipType)) {
+      if (tolower(skipType) == "svspp") {
+        lookupOrder <- "cfdbs.cfspp (sql1) -> cfdbs.species_itis_ne (sql2)"
+        return(list(data=speciesTable,sql1=sql1,sql2=sql2,missing=missing,lookupOrder=lookupOrder))
+      }
+    } else {
+      # use sci names to get SVSPP from svdbs
+      sql3 <- paste0("select distinct COMNAME, SCINAME, SVSPP from svdbs.svspecies_list where SCINAME in (",sciNames,") order by SVSPP;")
+      speciesTable3 <- DBI::dbGetQuery(channel,sql3) %>%
+        dplyr::rename(SCIENTIFIC_NAME=.data$SCINAME) %>%
+        dplyr::mutate(SVSPPsv = .data$SVSPP) %>%
+        dplyr::select(-.data$SVSPP)
+   
+      # compare species passed vs species found to get missing species
+      missing[["svdbs.svsspecies_list"]] <-  setdiff(unique(speciesTable2$SCIENTIFIC_NAME),unique(speciesTable3$SCIENTIFIC_NAME))
+      
+      # Join tables -------------------------------------------------------------
+  
+      # join with svdbs
+      # preserve all nespp3 codes passed as argument
+      speciesTable <- dplyr::left_join(speciesTable,speciesTable3,by="SCIENTIFIC_NAME") %>%
+        dplyr::distinct() %>%
+        dplyr::select(.data$NESPP3,.data$NAFOSPP,.data$SVSPPcf,.data$SVSPPsv,.data$COMMON_NAME,.data$COMNAME,
+                      .data$SCIENTIFIC_NAME,.data$SPECIES_ITIS) %>%
+        dplyr::arrange(.data$NESPP3) %>%
+        dplyr::as_tibble()
+      
+      lookupOrder <- "cfdbs.cfspp (sql1) -> cfdbs.species_itis_ne (sql2) -> svspp.svspecies_list (sql3)"
+    }
 #################################################################
 #################################################################
 #################################################################
@@ -120,10 +133,10 @@ create_species_lookup <- function(channel,species=NULL,speciesType="NESPP3"){
     sql1 <- paste0("select distinct COMNAME, SCINAME, SVSPP from svdbs.svspecies_list where SVSPP in (",speciesToFind,") order by SVSPP;")
 
     speciesTable1 <- DBI::dbGetQuery(channel,sql1) %>%
-      dplyr::rename(SCIENTIFIC_NAME=SCINAME) %>%
-      dplyr::mutate(SVSPPsv = SVSPP) %>%
-      dplyr::select(-SVSPP)
-    
+      dplyr::rename(SCIENTIFIC_NAME=.data$SCINAME) %>%
+      dplyr::mutate(SVSPPsv = .data$SVSPP) %>%
+      dplyr::select(-.data$SVSPP)
+
     # compare species passed vs species found to get list of missing species
     missing[["svspp.svspecies_list"]] <- tibble::enframe(setdiff(species,unique(speciesTable1$SVSPP)),name=NULL,value="SVSPP")
     
@@ -132,40 +145,55 @@ create_species_lookup <- function(channel,species=NULL,speciesType="NESPP3"){
     # use SCIENTFIC_NAME to select from species_itis_ne
     sql2 <- paste0("select distinct COMMON_NAME, SCIENTIFIC_NAME, SPECIES_ITIS, NESPP4 from cfdbs.species_itis_ne where SCIENTIFIC_NAME in (",sciNames,") and NESPP4_FLAG = 1 order by NESPP4;")
     speciesTable2 <- DBI::dbGetQuery(channel,sql2) %>%
-      dplyr::mutate(SCIENTIFIC_NAME = gsub("^\\s+|\\s+$", "",SCIENTIFIC_NAME)) %>%
-      dplyr::mutate(COMMON_NAME = gsub(", ",",",COMMON_NAME))
+      dplyr::mutate(SCIENTIFIC_NAME = gsub("^\\s+|\\s+$", "",.data$SCIENTIFIC_NAME)) %>%
+      dplyr::mutate(COMMON_NAME = gsub(", ",",",.data$COMMON_NAME))
     
     # compare species passed vs species found to get missing species
     missing[["cfdbs.species_itis_ne"]] <-  setdiff(unique(speciesTable1$SCIENTIFIC_NAME),unique(speciesTable2$SCIENTIFIC_NAME))
 
-    # use NESPP4s to select from cfdbs.cfspp (NAFOSPP)
-    # if any string exceeds 1000 items the sql query will fail. 
-    # So split into smaller calls
-    res <- split_sql_query_svspp(channel,speciesTable2$NESPP4,maxItems=900)
-    sql3 <- res$sql
-    speciesTable3 <- res$speciesTable
-    
-    # compare species in table1 vs species found in table 2 to get missing species
-    missing_nespp4s <-  setdiff(unique(speciesTable2$NESPP4),unique(speciesTable3$NESPP4))
-    missing_nespp3s <- unique(substring(missing_nespp4s,1,3))
-    # select nespp3s missing from species_itis_ne
-    missing[["cfdbs.cfspp"]] <- speciesTable3 %>%
-      dplyr::filter(NESPP3 %in% missing_nespp3s) %>%
-      dplyr::count(NESPP3) %>% 
-      dplyr::filter(n==1) %>%
-      dplyr::select(NESPP3)
-    
-    # join 2 tables by NESPP4
+    # join 2 tables (SVSPP + ITIS) by NESPP4
     speciesTable <- dplyr::inner_join(speciesTable1,speciesTable2,by="SCIENTIFIC_NAME") 
-    # join with svdbs
-    speciesTable <- dplyr::inner_join(speciesTable,speciesTable3,by="NESPP4") %>%
-      dplyr::select(-NESPP4) %>%
-      dplyr::distinct() %>%
-      dplyr::select(NESPP3,NAFOSPP,SVSPPcf,SVSPPsv,COMMON_NAME,COMNAME,SCIENTIFIC_NAME,SPECIES_ITIS) %>%
-      dplyr::arrange(NESPP3) %>%
-      dplyr::as_tibble()
     
-    lookupOrder <- "svspp.svspecies_list (sql1) -> cfdbs.species_itis_ne (sql2) -> cfdbs.cfspp (sql3)"
+    if(!is.null(skipType)) {
+      if(tolower(skipType) == "nespp3") {
+        lookupOrder <- "svspp.svspecies_list (sql1) -> cfdbs.species_itis_ne (sql2)"
+        # remove 4the digit of nespp4 and find distinct records
+        speciesTable <- speciesTable %>%
+          dplyr::mutate(NESPP3 = substr(.data$NESPP4,1,3)) %>%
+          dplyr::select(-.data$NESPP4) %>%
+          dplyr::distinct()
+        return(list(data=speciesTable,sql1=sql1,sql2=sql2,missing=missing,lookupOrder=lookupOrder))
+      }
+    } else {
+      
+      # use NESPP4s to select from cfdbs.cfspp (NAFOSPP)
+      # if any string exceeds 1000 items the sql query will fail. 
+      # So split into smaller calls
+      res <- split_sql_query_svspp(channel,speciesTable2$NESPP4,maxItems=900)
+      sql3 <- res$sql
+      speciesTable3 <- res$speciesTable
+      
+      # compare species in table 1 vs species found in table 2 to get missing species
+      missing_nespp4s <-  setdiff(unique(speciesTable2$NESPP4),unique(speciesTable3$NESPP4))
+      missing_nespp3s <- unique(substring(missing_nespp4s,1,3))
+      # select nespp3s missing from species_itis_ne
+      missing[["cfdbs.cfspp"]] <- speciesTable3 %>%
+        dplyr::filter(.data$NESPP3 %in% missing_nespp3s) %>%
+        dplyr::count(.data$NESPP3) %>% 
+        dplyr::filter(.data$n==1) %>%
+        dplyr::select(.data$NESPP3)
+      
+      # join with svdbs
+      speciesTable <- dplyr::inner_join(speciesTable,speciesTable3,by="NESPP4") %>%
+        dplyr::select(-.data$NESPP4) %>%
+        dplyr::distinct() %>%
+        dplyr::select(.data$NESPP3,.data$NAFOSPP,.data$SVSPPcf,.data$SVSPPsv,
+                      .data$COMMON_NAME,.data$COMNAME,.data$SCIENTIFIC_NAME,.data$SPECIES_ITIS) %>%
+        dplyr::arrange(.data$NESPP3) %>%
+        dplyr::as_tibble()
+      
+      lookupOrder <- "svspp.svspecies_list (sql1) -> cfdbs.species_itis_ne (sql2) -> cfdbs.cfspp (sql3)"
+    }
   
     
     #################################################################
@@ -182,8 +210,8 @@ create_species_lookup <- function(channel,species=NULL,speciesType="NESPP3"){
     # look in species_itis_ne table and join with cfdbs.cfspp table by nespp4 to obtain other codes
     sql1 <- paste0("select distinct COMMON_NAME, SCIENTIFIC_NAME, SPECIES_ITIS, NESPP4 from cfdbs.species_itis_ne where SPECIES_ITIS in (",speciesToFind,") and NESPP4_FLAG = 1 order by NESPP4;")
     speciesTable1 <- DBI::dbGetQuery(channel,sql1) %>% 
-      dplyr::mutate(SCIENTIFIC_NAME = gsub("^\\s+|\\s+$", "",SCIENTIFIC_NAME)) %>%
-      dplyr::mutate(COMMON_NAME = gsub(", ",",",COMMON_NAME))
+      dplyr::mutate(SCIENTIFIC_NAME = gsub("^\\s+|\\s+$", "",.data$SCIENTIFIC_NAME)) %>%
+      dplyr::mutate(COMMON_NAME = gsub(", ",",",.data$COMMON_NAME))
       
         # compare species passed vs species found to get list of missing species
     missing[["cfdbs.species_itis_ne"]] <- tibble::enframe(setdiff(species,unique(speciesTable1$SPECIES_ITIS)),name=NULL,value="SPECIES_ITIS")
@@ -201,19 +229,19 @@ create_species_lookup <- function(channel,species=NULL,speciesType="NESPP3"){
     missing_nespp3s <- unique(substring(missing_nespp4s,1,3))
     # select nespp3s missing from species_itis_ne
     missing[["cfdbs.cfspp"]] <- speciesTable2 %>%
-      dplyr::filter(NESPP3 %in% missing_nespp3s) %>%
-      dplyr::count(NESPP3) %>% 
-      dplyr::filter(n==1) %>%
-      dplyr::select(NESPP3)
+      dplyr::filter(.data$NESPP3 %in% missing_nespp3s) %>%
+      dplyr::count(.data$NESPP3) %>% 
+      dplyr::filter(.data$n==1) %>%
+      dplyr::select(.data$NESPP3)
 
     # use SCIENTIFIC_NAME from svspecies_list
     sciNames <- paste0("'",speciesTable1$SCIENTIFIC_NAME,"'",collapse=",")
 
     sql3 <- paste0("select distinct COMNAME, SCINAME, SVSPP from svdbs.svspecies_list where SCINAME in (",sciNames,") order by SVSPP;")
     speciesTable3 <- DBI::dbGetQuery(channel,sql3) %>%
-      dplyr::rename(SCIENTIFIC_NAME=SCINAME) %>%
-      dplyr::mutate(SVSPPsv = SVSPP) %>%
-      dplyr::select(-SVSPP)
+      dplyr::rename(SCIENTIFIC_NAME=.data$SCINAME) %>%
+      dplyr::mutate(SVSPPsv = .data$SVSPP) %>%
+      dplyr::select(-.data$SVSPP)
     
     # compare species passed vs species found to get missing species
     missing[["svdbs.svsspecies_list"]] <-  setdiff(unique(speciesTable1$SCIENTIFIC_NAME),unique(speciesTable3$SCIENTIFIC_NAME))
@@ -222,10 +250,11 @@ create_species_lookup <- function(channel,species=NULL,speciesType="NESPP3"){
     speciesTable <- dplyr::inner_join(speciesTable1,speciesTable2,by="NESPP4") 
     # join with svdbs
     speciesTable <- dplyr::inner_join(speciesTable,speciesTable3,by="SCIENTIFIC_NAME") %>%
-      dplyr::select(-NESPP4) %>%
+      dplyr::select(-.data$NESPP4) %>%
       dplyr::distinct() %>%
-      dplyr::select(NESPP3,NAFOSPP,SVSPPcf,SVSPPsv,COMMON_NAME,COMNAME,SCIENTIFIC_NAME,SPECIES_ITIS) %>%
-      dplyr::arrange(NESPP3) %>%
+      dplyr::select(.data$NESPP3,.data$NAFOSPP,.data$SVSPPcf,.data$SVSPPsv,
+                    .data$COMMON_NAME,.data$COMNAME,.data$SCIENTIFIC_NAME,.data$SPECIES_ITIS) %>%
+      dplyr::arrange(.data$NESPP3) %>%
       dplyr::as_tibble()
     
     lookupOrder <- "cfdbs.species_itis_ne (sql1) -> cfdbs.cfspp (sql2) -> svspp.svspecies_list (sql3)"
