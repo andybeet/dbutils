@@ -1,8 +1,8 @@
 # dbutils
 
 <!-- badges: start -->
-[![R-CMD-check](https://github.com/andybeet/dbutils/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/andybeet/dbutils/actions/workflows/R-CMD-check.yaml)
-[![gh-pages](https://github.com/andybeet/dbutils/actions/workflows/pkgdown.yml/badge.svg)](https://github.com/andybeet/dbutils/actions/workflows/pkgdown.yml)
+[![R-CMD-check](https://github.com/andybeet/dbutils/actions/workflows/check-standard.yaml/badge.svg)](https://github.com/andybeet/dbutils/actions/workflows/check-standard.yaml)
+[![gh-pages](https://github.com/andybeet/dbutils/actions/workflows/pkgdown.yaml/badge.svg)](https://github.com/andybeet/dbutils/actions/workflows/pkgdown.yaml)
 [![gitleaks](https://github.com/andybeet/dbutils/actions/workflows/secretScan.yml/badge.svg)](https://github.com/andybeet/dbutils/actions/workflows/secretScan.yml)
 <!-- badges: end -->
 
