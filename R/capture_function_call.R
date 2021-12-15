@@ -1,10 +1,11 @@
 #' Captures function call
 #'
-#' A function call and its arguments, including default arguments, are captured and returned as class call
+#' A function call and its arguments, including default arguments, are captured
+#' and returned as class call
 #'
 #'@param ... F
 #'
-#' @return the function call
+#' @return The function call
 #'
 #'
 #'@export

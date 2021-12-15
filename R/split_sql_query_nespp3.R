@@ -1,4 +1,4 @@
-#' Splits a query into multiple parts
+#' Splits a query into multiple parts, NESPP3 codes
 #' 
 #' If a query has > 1000 items it will fail. For all cases where a query has > \code{maxItems} the call will be split. This occurrs when NESPP4 codes used in an a sql call.
 #'

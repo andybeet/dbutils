@@ -2,7 +2,7 @@
 % Please edit documentation in R/createString.R
 \name{createString}
 \alias{createString}
-\title{Utility function (Internal, not exported) to convert argument to strings}
+\title{Utility function to convert argument to strings}
 \usage{
 createString(itemName, chosenItem, convertToCharacter, numChars)
 }

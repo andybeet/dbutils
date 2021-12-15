@@ -2,7 +2,7 @@
 % Please edit documentation in R/createStringSpecies.R
 \name{createStringSpecies}
 \alias{createStringSpecies}
-\title{Utility function (Internal, not exported) to convert argument to strings}
+\title{Utility function to convert NESPP codes to strings}
 \usage{
 createStringSpecies(itemName, chosenItem, convertToCharacter, numChars)
 }
