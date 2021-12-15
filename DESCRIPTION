@@ -8,7 +8,7 @@ Authors@R:
            email = "andrew.beet@noaa.gov",
            comment = c(ORCID = "0000-0001-8270-7090"))
 Description: Provides tools for database connectivity and miscellaneous functions to convert passed arguments to SQL statements.
-URL: https://github.com/andybeet/dbutils
+URL: https://github.com/andybeet/dbutils, https://andybeet.github.io/dbutils
 BugReports: https://github.com/andybeet/dbutils/issues
 License: file LICENSE
 Encoding: UTF-8
