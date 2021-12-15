@@ -10,8 +10,9 @@ capture_function_call(...)
 \item{...}{F}
 }
 \value{
-the function call
+The function call
 }
 \description{
-A function call and its arguments, including default arguments, are captured and returned as class call
+A function call and its arguments, including default arguments, are captured
+and returned as class call
 }

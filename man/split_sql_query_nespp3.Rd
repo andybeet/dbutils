@@ -2,7 +2,7 @@
 % Please edit documentation in R/split_sql_query_nespp3.R
 \name{split_sql_query_nespp3}
 \alias{split_sql_query_nespp3}
-\title{Splits a query into multiple parts}
+\title{Splits a query into multiple parts, NESPP3 codes}
 \usage{
 split_sql_query_nespp3(channel, NESPP4s, maxItems = 900)
 }

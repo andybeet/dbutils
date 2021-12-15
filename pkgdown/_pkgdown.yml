@@ -1,0 +1,32 @@
+url: https://andybeet.github.io/dbutils/
+
+deploy:
+  install_metadata: true
+
+reference:
+- title: "Connecting"
+  desc: ""
+- contents:
+  - connect_to_database
+- title: "Supporting"
+  desc: ""
+- contents:
+  - create_species_lookup
+  - capture_function_call
+- title: "Utility functions"
+  desc: "Functions called from other packages to format SQL statements"
+- contents:
+  - create_sql
+  - createString
+  - createStringSpecies
+  - createStringYear
+  - createTonnageString
+  - split_sql_query_nespp3
+  - split_sql_query_svspp
+- title: "Package Info"
+  desc: ""
+- contents:
+  - dbutils
+
+
+

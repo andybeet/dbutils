@@ -4,4 +4,5 @@
 # folders
 other
 docs
+pkgdown
 ^\.github$

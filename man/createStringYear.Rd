@@ -2,7 +2,7 @@
 % Please edit documentation in R/createStringYear.R
 \name{createStringYear}
 \alias{createStringYear}
-\title{Utility function (Internal, not exported) to convert argument to strings}
+\title{Utility function to convert argument to strings}
 \usage{
 createStringYear(itemName, chosenItem, convertToCharacter, numChars)
 }

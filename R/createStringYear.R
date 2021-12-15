@@ -1,4 +1,4 @@
-#' Utility function (Internal, not exported) to convert argument to strings
+#' Utility function to convert argument to strings
 #'
 #' inputs to get_ functions are required as strings when passed as a sql statement
 #' This function converts numeric inputs to character strings
