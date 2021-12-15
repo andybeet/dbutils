@@ -1,6 +1,7 @@
-# dbutils 0.1.0
+# dbutils 0.1.2
 
-* Added a `NEWS.md` file to track changes to the package.
+* Updated function documentation (typos)
+* Renamed function file name
 
 # dbutils 0.1.1
 
@@ -8,4 +9,9 @@
 * Added `skipType` argument to `create_species_lookup` to allow user to avoid joining
 all 3 species codes SVSPP, NESPP#, ITIS and skip either NESPP3 or SVSPP.
 * Included `rlang` as a dependency
+
+
+# dbutils 0.1.0
+
+* Added a `NEWS.md` file to track changes to the package.
 
