@@ -1,6 +1,7 @@
 url: https://andybeet.github.io/dbutils/
 
-
+deploy:
+  install_metadata: true
 
 reference:
 - title: "Connecting"
