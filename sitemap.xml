@@ -1,54 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://andybeet.github.io/dbutils/404.html</loc>
+    <loc>https://github.com/andybeet/dbutils/404.html</loc>
   </url>
   <url>
-    <loc>https://andybeet.github.io/dbutils/LICENSE-text.html</loc>
+    <loc>https://github.com/andybeet/dbutils/LICENSE-text.html</loc>
   </url>
   <url>
-    <loc>https://andybeet.github.io/dbutils/authors.html</loc>
+    <loc>https://github.com/andybeet/dbutils/authors.html</loc>
   </url>
   <url>
-    <loc>https://andybeet.github.io/dbutils/index.html</loc>
+    <loc>https://github.com/andybeet/dbutils/index.html</loc>
   </url>
   <url>
-    <loc>https://andybeet.github.io/dbutils/news/index.html</loc>
+    <loc>https://github.com/andybeet/dbutils/news/index.html</loc>
   </url>
   <url>
-    <loc>https://andybeet.github.io/dbutils/reference/capture_function_call.html</loc>
+    <loc>https://github.com/andybeet/dbutils/reference/capture_function_call.html</loc>
   </url>
   <url>
-    <loc>https://andybeet.github.io/dbutils/reference/connect_to_database.html</loc>
+    <loc>https://github.com/andybeet/dbutils/reference/connect_to_database.html</loc>
   </url>
   <url>
-    <loc>https://andybeet.github.io/dbutils/reference/createString.html</loc>
+    <loc>https://github.com/andybeet/dbutils/reference/createString.html</loc>
   </url>
   <url>
-    <loc>https://andybeet.github.io/dbutils/reference/createStringSpecies.html</loc>
+    <loc>https://github.com/andybeet/dbutils/reference/createStringSpecies.html</loc>
   </url>
   <url>
-    <loc>https://andybeet.github.io/dbutils/reference/createStringYear.html</loc>
+    <loc>https://github.com/andybeet/dbutils/reference/createStringYear.html</loc>
   </url>
   <url>
-    <loc>https://andybeet.github.io/dbutils/reference/createTonnageString.html</loc>
+    <loc>https://github.com/andybeet/dbutils/reference/createTonnageString.html</loc>
   </url>
   <url>
-    <loc>https://andybeet.github.io/dbutils/reference/create_species_lookup.html</loc>
+    <loc>https://github.com/andybeet/dbutils/reference/create_species_lookup.html</loc>
   </url>
   <url>
-    <loc>https://andybeet.github.io/dbutils/reference/create_sql.html</loc>
+    <loc>https://github.com/andybeet/dbutils/reference/create_sql.html</loc>
   </url>
   <url>
-    <loc>https://andybeet.github.io/dbutils/reference/dbutils.html</loc>
+    <loc>https://github.com/andybeet/dbutils/reference/dbutils.html</loc>
   </url>
   <url>
-    <loc>https://andybeet.github.io/dbutils/reference/index.html</loc>
+    <loc>https://github.com/andybeet/dbutils/reference/index.html</loc>
   </url>
   <url>
-    <loc>https://andybeet.github.io/dbutils/reference/split_sql_query_nespp3.html</loc>
+    <loc>https://github.com/andybeet/dbutils/reference/split_sql_query_nespp3.html</loc>
   </url>
   <url>
-    <loc>https://andybeet.github.io/dbutils/reference/split_sql_query_svspp.html</loc>
+    <loc>https://github.com/andybeet/dbutils/reference/split_sql_query_svspp.html</loc>
   </url>
 </urlset>

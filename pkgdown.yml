@@ -2,8 +2,8 @@ pandoc: 2.7.3
 pkgdown: 2.0.1
 pkgdown_sha: ~
 articles: {}
-last_built: 2021-12-15T22:16Z
+last_built: 2021-12-15T22:52Z
 urls:
-  reference: https://andybeet.github.io/dbutils/reference
-  article: https://andybeet.github.io/dbutils/articles
+  reference: https://github.com/andybeet/dbutils/reference
+  article: https://github.com/andybeet/dbutils/articles
 
