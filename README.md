@@ -1,8 +1,10 @@
 # dbutils
 
-![Install on
-windows](https://github.com/andybeet/dbutils/workflows/Install%20on%20windows/badge.svg)
-![gitleaks](https://github.com/andybeet/dbutils/workflows/gitleaks/badge.svg)
+<!-- badges: start -->
+[![R-CMD-check](https://github.com/andybeet/dbutils/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/andybeet/dbutils/actions/workflows/R-CMD-check.yaml)
+[![gh-pages](https://github.com/andybeet/dbutils/actions/workflows/pkgdown.yml/badge.svg)](https://github.com/andybeet/dbutils/actions/workflows/pkgdown.yml)
+[![gitleaks](https://github.com/andybeet/dbutils/actions/workflows/secretScan.yml/badge.svg)](https://github.com/andybeet/dbutils/actions/workflows/secretScan.yml)
+<!-- badges: end -->
 
 Collection of utility function to aid in database manipulation
 
