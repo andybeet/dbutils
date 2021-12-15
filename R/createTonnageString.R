@@ -1,4 +1,4 @@
-#' Utility function (Internal, not exported) to convert argument to strings
+#' Utility function to convert tonnage to strings
 #' 
 #' inputs to get_ functions are required as strings when passed as a sql statement
 #' This function converts numeric inputs to character strings. Used specifically for tonnage class
@@ -6,12 +6,12 @@
 #' @param itemName Character string. Variable name as it exists in the data base
 #' @param chosenItem User input value of variable listed in itemName
 #' 
-#' @return A charachter string
+#' @return A character string
 #' 
 #' @examples 
 #' \dontrun{
-#' createTonnageString(itemName="toncl2",tonnage=c(1,2))
-#' createTonnageString(itemName="toncl2",tonnage="all"))
+#' createTonnageString(itemName="toncl2",chosenItem=c(1,2))
+#' createTonnageString(itemName="toncl2",chosenItem="all")
 #' 
 #' }
 #' @export
