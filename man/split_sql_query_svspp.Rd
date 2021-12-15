@@ -2,7 +2,7 @@
 % Please edit documentation in R/split_sql_query_svspp.R
 \name{split_sql_query_svspp}
 \alias{split_sql_query_svspp}
-\title{Splits a query into multiple parts}
+\title{Splits a query into multiple parts, SVSPP codes}
 \usage{
 split_sql_query_svspp(channel, NESPP4s, maxItems = 900)
 }

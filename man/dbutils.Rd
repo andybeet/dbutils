@@ -4,10 +4,13 @@
 \name{dbutils}
 \alias{dbutils}
 \title{dbutils: Utility functions to aid in database interactions}
+\description{
+Aids in interacting with databases
+}
 \details{
 \itemize{
-\item connect to databases
-\item capture function calls
-\item sql statement formatting functions
+\item Connect to databases
+\item Capture function calls
+\item SQL statement formatting functions
 }
 }

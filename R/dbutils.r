@@ -1,6 +1,6 @@
 #' dbutils: Utility functions to aid in database interactions
 #'
-#' 
+#' Aids in interacting with databases
 #'
 #'\itemize{
 #'\item Connect to databases

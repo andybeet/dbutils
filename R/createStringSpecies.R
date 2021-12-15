@@ -1,4 +1,4 @@
-#' Utility function (Internal, not exported) to convert argument to strings
+#' Utility function to convert NESPP codes to strings
 #'
 #' Deal explicity with NESPP3 and NESPP4 codes.
 #' inputs to get_ functions are required as strings when passed as a sql statement
