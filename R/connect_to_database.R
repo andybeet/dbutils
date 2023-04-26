@@ -34,7 +34,9 @@ connect_to_database  <-  function(server,uid,quiet=F){
   # connects to DB and catches errors and warnings
    chan <- tryCatch(
       {
-        chan <- DBI::dbConnect(odbc::odbc(), dsn=server,uid=uid,pwd=pwd, timeout = 10)
+        driver <- ROracle::Oracle()
+        chan <- ROracle::dbConnect(driver, dbname=server,username=uid,password=pwd)
+        #chan <- DBI::dbConnect(odbc::odbc(), dsn=server,uid=uid,pwd=pwd, timeout = 10)
         
       }, warning=function(w) {
         if (grepl("login denied",w)) {message("login to server failed - Check username and password")}
