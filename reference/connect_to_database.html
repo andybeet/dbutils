@@ -18,7 +18,7 @@ posesses a valid username and password. A popup window is used for secure passwo
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dbutils</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.2</span>
       </span>
     </div>
 
@@ -55,21 +55,32 @@ posesses a valid username and password. A popup window is used for secure passwo
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">connect_to_database</span><span class="op">(</span><span class="va">server</span>, <span class="va">uid</span>, quiet <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">connect_to_database</span><span class="op">(</span><span class="va">server</span>, <span class="va">uid</span>, quiet <span class="op">=</span> <span class="cn">F</span>, ROracle <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>server</dt>
 <dd><p>Character string. Name of the server</p></dd>
+
+
 <dt>uid</dt>
 <dd><p>Character string. Username of person with permissions</p></dd>
+
+
 <dt>quiet</dt>
 <dd><p>Boolean. Suppress successful connection message.</p></dd>
+
+
+<dt>ROracle</dt>
+<dd><p>Boolean. If using ROracle package driver to connect to db (Default = F)</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>Object inherited from <a href="https://dbi.r-dbi.org/reference/DBIConnection-class.html" class="external-link">DBIConnection-class</a>. This object is used to connect
+    
+
+<p>Object inherited from <a href="https://dbi.r-dbi.org/reference/DBIConnection-class.html" class="external-link">DBIConnection-class</a>. This object is used to connect
 to communicate with the database engine. (see <code>connect_to_database</code>)</p>
     </div>
     <div id="details">
@@ -92,9 +103,9 @@ Note: if you use 32 bit Rstudio then you need a 32 bit client</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="va">con</span> <span class="op">&lt;-</span> <span class="fu">connect_to_database</span><span class="op">(</span>server<span class="op">=</span><span class="st">"name_of_server"</span>,uid<span class="op">=</span><span class="st">"individuals_username"</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="va">con</span> <span class="op">&lt;-</span> <span class="fu">connect_to_database</span><span class="op">(</span>server<span class="op">=</span><span class="st">"name_of_server"</span>,uid<span class="op">=</span><span class="st">"individuals_username"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -109,7 +120,7 @@ Note: if you use 32 bit Rstudio then you need a 32 bit client</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

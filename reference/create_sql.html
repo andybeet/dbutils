@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dbutils</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.2</span>
       </span>
     </div>
 
@@ -53,33 +53,44 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">create_sql</span><span class="op">(</span><span class="va">dataName</span>, <span class="va">fieldName</span>, <span class="va">fieldName2</span>, <span class="va">dataType</span>, <span class="va">defaultSqlStatement</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">create_sql</span><span class="op">(</span><span class="va">dataName</span>, <span class="va">fieldName</span>, <span class="va">fieldName2</span>, <span class="va">dataType</span>, <span class="va">defaultSqlStatement</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>dataName</dt>
 <dd><p>Character or numeric. value of argument passed</p></dd>
+
+
 <dt>fieldName</dt>
 <dd><p>Character. Database fieldname name which has value = <code>dataName</code></p></dd>
+
+
 <dt>fieldName2</dt>
 <dd><p>Character. Alternative field name for string values of <code>dataName</code></p></dd>
+
+
 <dt>dataType</dt>
 <dd><p>Character. Formatting for the <code>dataName</code> in the database</p></dd>
+
+
 <dt>defaultSqlStatement</dt>
 <dd><p>String. Select statement. (eg. "Select * from db")</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>String. SQL statement</p>
+    
+
+<p>String. SQL statement</p>
     </div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="fu">create_sql</span><span class="op">(</span>dataName <span class="op">=</span> <span class="st">"all"</span>,fieldName<span class="op">=</span><span class="st">"svspp"</span>, fieldname2<span class="op">=</span> <span class="st">"comname"</span>,</span>
-<span class="r-in"> dataType <span class="op">=</span> <span class="st">"%03d"</span>,defaultSqlStatement<span class="op">=</span><span class="st">"select * from svdbs.svspecies_list"</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="fu">create_sql</span><span class="op">(</span>dataName <span class="op">=</span> <span class="st">"all"</span>,fieldName<span class="op">=</span><span class="st">"svspp"</span>, fieldname2<span class="op">=</span> <span class="st">"comname"</span>,</span></span>
+<span class="r-in"><span> dataType <span class="op">=</span> <span class="st">"%03d"</span>,defaultSqlStatement<span class="op">=</span><span class="st">"select * from svdbs.svspecies_list"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -94,7 +105,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

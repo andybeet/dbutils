@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dbutils</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.2</span>
       </span>
     </div>
 
@@ -53,7 +53,7 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">split_sql_query_nespp3</span><span class="op">(</span><span class="va">channel</span>, <span class="va">NESPP4s</span>, maxItems <span class="op">=</span> <span class="fl">900</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">split_sql_query_nespp3</span><span class="op">(</span><span class="va">channel</span>, <span class="va">NESPP4s</span>, maxItems <span class="op">=</span> <span class="fl">900</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -61,18 +61,27 @@
     <dl><dt>channel</dt>
 <dd><p>an Object inherited from <a href="https://dbi.r-dbi.org/reference/DBIConnection-class.html" class="external-link">DBIConnection-class</a>. This object is used to connect
 to communicate with the database engine. (see <code><a href="connect_to_database.html">connect_to_database</a></code>)</p></dd>
+
+
 <dt>NESPP4s</dt>
 <dd><p>Numerical Vector. NESPP4 codes used in an sql query</p></dd>
+
+
 <dt>maxItems</dt>
 <dd><p>Numeric scalar. Maximum number of items in a single sql query</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>List</p>
+    
+
+<p>List</p>
 <dl><dt>sql</dt>
 <dd><p>the sql statements</p></dd>
+
 <dt>speciesTable</dt>
 <dd><p>Resulting table from concatenating the sql calls</p></dd>
+
 </dl></div>
 
   </div>
@@ -87,7 +96,7 @@ to communicate with the database engine. (see <code><a href="connect_to_database
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

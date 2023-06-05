@@ -18,7 +18,7 @@ Combine  NESPP3, SVSPP3, species_itis, common name and scientific name."><!-- ma
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">dbutils</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.2</span>
       </span>
     </div>
 
@@ -55,12 +55,12 @@ Combine  NESPP3, SVSPP3, species_itis, common name and scientific name.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">create_species_lookup</span><span class="op">(</span>
-  <span class="va">channel</span>,
-  species <span class="op">=</span> <span class="cn">NULL</span>,
-  speciesType <span class="op">=</span> <span class="st">"NESPP3"</span>,
-  skipType <span class="op">=</span> <span class="cn">NULL</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">create_species_lookup</span><span class="op">(</span></span>
+<span>  <span class="va">channel</span>,</span>
+<span>  species <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  speciesType <span class="op">=</span> <span class="st">"NESPP3"</span>,</span>
+<span>  skipType <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -68,29 +68,44 @@ Combine  NESPP3, SVSPP3, species_itis, common name and scientific name.</p>
     <dl><dt>channel</dt>
 <dd><p>an Object inherited from <a href="https://dbi.r-dbi.org/reference/DBIConnection-class.html" class="external-link">DBIConnection-class</a>. This object is used to connect
 to communicate with the database engine. (see <code><a href="connect_to_database.html">connect_to_database</a></code>)</p></dd>
+
+
 <dt>species</dt>
 <dd><p>Character String or numeric. Either NESPP3, SVSPP, Species_itis codes</p></dd>
+
+
 <dt>speciesType</dt>
 <dd><p>Character string. Type of species code entered for <code>species</code>. Either NESPP3, SVSPP, Species_itis (not case sensitive). Default = "NESPP3"</p></dd>
+
+
 <dt>skipType</dt>
 <dd><p>Character string. species Type to ignore in join. For example maybe only want to join SVSPP with ITIS. Same as <code>speciesType</code>
 (Default = NULL, all three codes are joined)</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A list is returned containing the result of the data pull as well as the sql statements used in the data pulls and a list of missing species codes, names, that were not present:</p>
+    
+
+<p>A list is returned containing the result of the data pull as well as the sql statements used in the data pulls and a list of missing species codes, names, that were not present:</p>
 <dl><dt>data</dt>
 <dd><p>Tibble. Each row represents a species with columns NESPP3, NAFOSPP, SVSPPcf, SVSPPsv, COMMON_NAME, COMNAME, SCIENTIFIC_NAME, SPECIES_ITIS</p></dd>
+
 <dt>sql1</dt>
 <dd><p>Character string. sql statement used in first table</p></dd>
+
 <dt>sql2</dt>
 <dd><p>Character string. sql statement used in second table</p></dd>
+
 <dt>sql3</dt>
 <dd><p>Character string. sql statement used in third table</p></dd>
+
 <dt>missing</dt>
 <dd><p>List. Codes not found in respective tables</p></dd>
+
 <dt>lookupOrder</dt>
 <dd><p>Character string. The order in which the tables were accessed. Compare with the sqlx output</p></dd>
+
 </dl></div>
     <div id="database-tables-used">
     <h2>Database tables used</h2>
@@ -119,7 +134,7 @@ to communicate with the database engine. (see <code><a href="connect_to_database
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>
