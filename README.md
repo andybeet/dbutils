@@ -12,7 +12,16 @@ Collection of utility function to aid in database manipulation
 
 ### Installation
 
+`remotes::install_github("andybeet/dbutils@v0.1.2")`
+
+### Installation using ROracle
+
+If you already have `ROracle` set up on your machine then use
+
 `remotes::install_github("andybeet/dbutils")`
+
+Caution: `ROracle` is out of date and has not been tested with versions of R > 3.2 and versions of instant client > 12.x
+
 
 ## Contact
 
