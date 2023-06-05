@@ -1,3 +1,10 @@
+# dbutils 0.2.2
+
+## Minor update
+
+* `connect_to_database` - new function argument. `ROracle = F`. Allows user to use the driver as specified by the ROracle package instead of using `odbc`
+
+
 # dbutils 0.1.2
 
 * Updated function documentation (typos)
