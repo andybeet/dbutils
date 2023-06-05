@@ -12,6 +12,7 @@
 #' @param server Character string. Name of the server
 #' @param uid  Character string. Username of person with permissions
 #' @param quiet Boolean. Suppress successful connection message. 
+#' @param ROracle Boolean. If using ROracle package driver to connect to db (Default = F)
 #' 
 #' @return Object inherited from \link[DBI]{DBIConnection-class}. This object is used to connect
 #' to communicate with the database engine. (see \code{\link{connect_to_database}})
@@ -26,7 +27,7 @@
 #'}
 #' @export
 
-connect_to_database  <-  function(server,uid,quiet=F){
+connect_to_database  <-  function(server,uid,quiet=F,ROracle=F){
   # calls function for user to enter password
   pwd <- getPass::getPass(msg=paste0("Enter the password for user ",uid," on server (",server,"):"),forcemask = FALSE)
   
@@ -34,7 +35,12 @@ connect_to_database  <-  function(server,uid,quiet=F){
   # connects to DB and catches errors and warnings
    chan <- tryCatch(
       {
-        chan <- DBI::dbConnect(odbc::odbc(), dsn=server,uid=uid,pwd=pwd, timeout = 10)
+        if (ROracle) {
+          driver <- ROracle::Oracle()
+          chan <- ROracle::dbConnect(driver, dbname=server,username=uid,password=pwd)
+        } else {
+          chan <- DBI::dbConnect(odbc::odbc(), dsn=server,uid=uid,pwd=pwd, timeout = 10)
+        }
         
       }, warning=function(w) {
         if (grepl("login denied",w)) {message("login to server failed - Check username and password")}
