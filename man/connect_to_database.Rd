@@ -4,7 +4,7 @@
 \alias{connect_to_database}
 \title{Connect to an internal NEFSC database.}
 \usage{
-connect_to_database(server, uid, quiet = F, ROracle = F)
+connect_to_database(server, uid, quiet = F, ROracle = T)
 }
 \arguments{
 \item{server}{Character string. Name of the server}
@@ -13,7 +13,7 @@ connect_to_database(server, uid, quiet = F, ROracle = F)
 
 \item{quiet}{Boolean. Suppress successful connection message.}
 
-\item{ROracle}{Boolean. If using ROracle package driver to connect to db (Default = F)}
+\item{ROracle}{Boolean. If using ROracle package driver to connect to db (Default = T)}
 }
 \value{
 Object inherited from \link[DBI]{DBIConnection-class}. This object is used to connect
