@@ -10,9 +10,6 @@ Collection of utility function to aid in database manipulation
 
 ## Usage
 
-### Installation
-
-`remotes::install_github("andybeet/dbutils@v0.1.2")`
 
 ### Installation using ROracle
 
@@ -22,6 +19,13 @@ If you already have `ROracle` set up on your machine then use
 
 Caution: `ROracle` is out of date and has not been tested with versions of R > 3.2 and versions of instant client > 12.x
 
+### Installation without ROracle
+
+Caution: This may not work if DNS settings are not configured properly
+
+`remotes::install_github("andybeet/dbutils@v0.1.2")`
+
+If `odbc::odbcListDrivers()` returns an entry for the instantclient you should be able to use this package without `ROracle`
 
 ## Contact
 
