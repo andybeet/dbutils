@@ -20,6 +20,14 @@ You will need to have `ROracle` set up on your machine then use
 Caution: `ROracle` is out of date and has not been tested with versions of R > 3.2 and versions of instant client > 12.x
 
 
+## Usage
+
+To connect to databases:
+
+`con <- dbutils::connect_to_database("dbname","username")`
+
+`DBI::dbGetQuery(con,sqlStatement)`
+
 ## Contact
 
 | [andybeet](https://github.com/andybeet)                                                         |
