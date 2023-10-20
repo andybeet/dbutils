@@ -13,6 +13,7 @@ BugReports: https://github.com/andybeet/dbutils/issues
 License: file LICENSE
 Encoding: UTF-8
 LazyData: true
+SystemRequirements: Oracle instant Client
 RoxygenNote: 7.2.3
 Imports: 
     magrittr,
