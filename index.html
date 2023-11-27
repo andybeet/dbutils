@@ -77,8 +77,17 @@
 <div class="section level3">
 <h3 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h3>
+<p>You will need to have <code>ROracle</code> set up on your machine then use</p>
 <p><code>remotes::install_github("andybeet/dbutils")</code></p>
+<p>Caution: <code>ROracle</code> is out of date and has not been tested with versions of R &gt; 3.2 and versions of instant client &gt; 12.x</p>
 </div>
+</div>
+<div class="section level2">
+<h2 id="usage-1">Usage<a class="anchor" aria-label="anchor" href="#usage-1"></a>
+</h2>
+<p>To connect to databases:</p>
+<p><code>con &lt;- dbutils::connect_to_database("dbname","username")</code></p>
+<p><code>DBI::dbGetQuery(con,sqlStatement)</code></p>
 </div>
 <div class="section level2">
 <h2 id="contact">Contact<a class="anchor" aria-label="anchor" href="#contact"></a>
