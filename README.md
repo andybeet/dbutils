@@ -13,11 +13,11 @@ Collection of utility function to aid in database manipulation
 
 ### Installation
 
-You will need to have `ROracle` set up on your machine then use
+You will need to have Oracle's instant client installed and set up on your machine then:
 
 `remotes::install_github("andybeet/dbutils")`
 
-Caution: `ROracle` is out of date and has not been tested with versions of R > 3.2 and versions of instant client > 12.x
+If this fails to install then you will need to get `ROracle` installed. The current version of `ROracle` on CRAN is out of date and has not been tested with versions of R > 3.2 and versions of instant client > 12.x. 
 
 
 ## Usage
@@ -25,6 +25,12 @@ Caution: `ROracle` is out of date and has not been tested with versions of R > 3
 To connect to databases:
 
 `con <- dbutils::connect_to_database("dbname","username")`
+
+or
+
+`con <- dbutils::connect_to_database("dbname","username",ROracle=F)` 
+
+if you want to use `odbc` to make a db connection rather than `ROracle`
 
 `DBI::dbGetQuery(con,sqlStatement)`
 
