@@ -8,6 +8,10 @@ reference:
   desc: ""
 - contents:
   - connect_to_database
+- title: "Get "
+  desc: "Functions that retrieve information from databases"
+- contents:
+  - starts_with("get")
 - title: "Supporting"
   desc: ""
 - contents:
@@ -16,11 +20,7 @@ reference:
 - title: "Utility functions"
   desc: "Functions called from other packages to format SQL statements"
 - contents:
-  - create_sql
-  - createString
-  - createStringSpecies
-  - createStringYear
-  - createTonnageString
+  - starts_with("create")
   - split_sql_query_nespp3
   - split_sql_query_svspp
 - title: "Package Info"
