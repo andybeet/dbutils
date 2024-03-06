@@ -8,6 +8,6 @@
 #'\item SQL statement formatting functions
 #'}
 #'
-#' @docType package
-#' @name dbutils
-NULL
+"_PACKAGE"
+
+

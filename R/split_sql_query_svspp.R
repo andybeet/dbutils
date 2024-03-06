@@ -34,9 +34,9 @@ split_sql_query_svspp <- function(channel,NESPP4s,maxItems=900) {
     # use NESPP4s to select from species_itis_ne
     nespp4s <- paste0("'",nespp4split,"'",collapse=",")
 
-    sqlpart <- paste0("select distinct NESPP3, NESPP4, NAFOSPP, SVSPP from cfdbs.cfspp where NESPP4  in (",nespp4s,") order by NESPP4;")
-    speciesTablepart <- DBI::dbGetQuery(channel,sqlpart) %>%
-      dplyr::mutate(SVSPPcf = gsub("^\\s+|\\s+$", "",.data$SVSPP)) %>%
+    sqlpart <- paste0("select distinct NESPP3, NESPP4, NAFOSPP, SVSPP from cfdbs.cfspp where NESPP4  in (",nespp4s,") order by NESPP4")
+    speciesTablepart <- DBI::dbGetQuery(channel,sqlpart)  |> 
+      dplyr::mutate(SVSPPcf = gsub("^\\s+|\\s+$", "",.data$SVSPP)) |> 
       dplyr::select(-.data$SVSPP)
     
     sql[[inum]] <- sqlpart
