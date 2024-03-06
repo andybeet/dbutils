@@ -1,6 +1,6 @@
 Package: dbutils
 Title: Utility package for db connectivity and functionality
-Version: 0.2.2
+Version: 0.3.0
 Authors@R: 
     person(given = "Andy",
            family = "Beet",

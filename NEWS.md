@@ -1,3 +1,8 @@
+# dbutils 0.3.0
+
+* Added function `get_oracle_tables` which allows users to obtain a list of all tables by owner found in a database
+* Table referenced in `create_species_lookup` changed location. Now points to new table
+
 # dbutils 0.2.2
 
 ## Minor update
