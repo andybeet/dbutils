@@ -40,7 +40,10 @@
     <loc>https://andybeet.github.io/dbutils/reference/create_sql.html</loc>
   </url>
   <url>
-    <loc>https://andybeet.github.io/dbutils/reference/dbutils.html</loc>
+    <loc>https://andybeet.github.io/dbutils/reference/dbutils-package.html</loc>
+  </url>
+  <url>
+    <loc>https://andybeet.github.io/dbutils/reference/get_oracle_tables.html</loc>
   </url>
   <url>
     <loc>https://andybeet.github.io/dbutils/reference/index.html</loc>
