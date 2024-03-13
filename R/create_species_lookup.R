@@ -23,14 +23,14 @@
 #' 
 #' Three tables are used to compile information:
 #' 
-#' cfdbs.cfspp and species_itis_ne and svdbs.svspecies_list. The resulting tables are then joined.
+#' cfdbs.cfspp and cfdbs.species_itis_ne and svdbs.svspecies_list. The resulting tables are then joined.
 #' 
 #' The order in which these tables are accessed depends on \code{speciesType}. For example,
 #' \code{speciesType = "NESPP3"}
 #' 
 #' 1. cfdbs.cfssp is accessed and NESPP3, NESPP4, NAFOSPP, SVSPP are pulled.
 #' 
-#' 2. cfdbs.species_itis_ne (now nefsc_garfo.cfdbs_species_itis_ne) is accessed using the NESPP4 codes found in step 1 and COMMON_NAME, SCIENTIFIC_NAME, SPECIES_ITIS, NESPP4 are pulled.
+#' 2. cfdbs.species_itis_ne is accessed using the NESPP4 codes found in step 1 and COMMON_NAME, SCIENTIFIC_NAME, SPECIES_ITIS, NESPP4 are pulled.
 #' 
 #' 3. svdbs.spsvspecies_list is accessed using the SCIENTIFIC_NAME codes found in step2 and COMNAME, SCINAME, SVSPP are pulled.
 #' 
@@ -80,7 +80,7 @@ create_species_lookup <- function(channel,species=NULL,speciesType="NESPP3", ski
     missing_nespp4s <-  setdiff(unique(speciesTable1$NESPP4),unique(speciesTable2$NESPP4))
     missing_nespp3s <- unique(substring(missing_nespp4s,1,3))
     # select nespp3s missing from species_itis_ne
-    missing[["nefsc_garfo.cfdbs_species_itis_ne"]] <- speciesTable1 %>%
+    missing[["cfdbs.species_itis_ne"]] <- speciesTable1 %>%
       dplyr::filter(.data$NESPP3 %in% missing_nespp3s) %>%
       dplyr::count(.data$NESPP3) %>% 
       dplyr::filter(.data$n==1) %>%
@@ -95,7 +95,7 @@ create_species_lookup <- function(channel,species=NULL,speciesType="NESPP3", ski
     
     if (!is.null(skipType)) {
       if (tolower(skipType) == "svspp") {
-        lookupOrder <- "cfdbs.cfspp (sql1) -> nefsc_garfo.cfdbs_species_itis_ne (sql2)"
+        lookupOrder <- "cfdbs.cfspp (sql1) -> cfdbs.species_itis_ne (sql2)"
         return(list(data=speciesTable,sql1=sql1,sql2=sql2,missing=missing,lookupOrder=lookupOrder))
       }
     } else {
@@ -120,7 +120,7 @@ create_species_lookup <- function(channel,species=NULL,speciesType="NESPP3", ski
         dplyr::arrange(.data$NESPP3) %>%
         dplyr::as_tibble()
       
-      lookupOrder <- "cfdbs.cfspp (sql1) -> nefsc_garfo.cfdbs_species_itis_ne (sql2) -> svspp.svspecies_list (sql3)"
+      lookupOrder <- "cfdbs.cfspp (sql1) -> cfdbs.species_itis_ne (sql2) -> svspp.svspecies_list (sql3)"
     }
 #################################################################
 #################################################################
@@ -143,20 +143,20 @@ create_species_lookup <- function(channel,species=NULL,speciesType="NESPP3", ski
     sciNames <- paste0("'",speciesTable1$SCIENTIFIC_NAME,"'",collapse=",")
     
     # use SCIENTFIC_NAME to select from species_itis_ne
-    sql2 <- paste0("select distinct COMMON_NAME, SCIENTIFIC_NAME, SPECIES_ITIS, NESPP4 from nefsc_garfo.cfdbs_species_itis_ne where SCIENTIFIC_NAME in (",sciNames,") and NESPP4_FLAG = 1 order by NESPP4")
+    sql2 <- paste0("select distinct COMMON_NAME, SCIENTIFIC_NAME, SPECIES_ITIS, NESPP4 from cfdbs.species_itis_ne where SCIENTIFIC_NAME in (",sciNames,") and NESPP4_FLAG = 1 order by NESPP4")
     speciesTable2 <- DBI::dbGetQuery(channel,sql2) %>%
       dplyr::mutate(SCIENTIFIC_NAME = gsub("^\\s+|\\s+$", "",.data$SCIENTIFIC_NAME)) %>%
       dplyr::mutate(COMMON_NAME = gsub(", ",",",.data$COMMON_NAME))
     
     # compare species passed vs species found to get missing species
-    missing[["nefsc_garfo.cfdbs_species_itis_ne"]] <-  setdiff(unique(speciesTable1$SCIENTIFIC_NAME),unique(speciesTable2$SCIENTIFIC_NAME))
+    missing[["cfdbs.species_itis_ne"]] <-  setdiff(unique(speciesTable1$SCIENTIFIC_NAME),unique(speciesTable2$SCIENTIFIC_NAME))
 
     # join 2 tables (SVSPP + ITIS) by NESPP4
     speciesTable <- dplyr::inner_join(speciesTable1,speciesTable2,by="SCIENTIFIC_NAME") 
     
     if(!is.null(skipType)) {
       if(tolower(skipType) == "nespp3") {
-        lookupOrder <- "svspp.svspecies_list (sql1) -> nefsc_garfo.cfdbs_species_itis_ne (sql2)"
+        lookupOrder <- "svspp.svspecies_list (sql1) -> cfdbs.species_itis_ne (sql2)"
         # remove 4the digit of nespp4 and find distinct records
         speciesTable <- speciesTable %>%
           dplyr::mutate(NESPP3 = substr(.data$NESPP4,1,3)) %>%
@@ -192,7 +192,7 @@ create_species_lookup <- function(channel,species=NULL,speciesType="NESPP3", ski
         dplyr::arrange(.data$NESPP3) %>%
         dplyr::as_tibble()
       
-      lookupOrder <- "svspp.svspecies_list (sql1) -> nefsc_garfo.cfdbs_species_itis_ne (sql2) -> cfdbs.cfspp (sql3)"
+      lookupOrder <- "svspp.svspecies_list (sql1) -> cfdbs.species_itis_ne (sql2) -> cfdbs.cfspp (sql3)"
     }
   
     
@@ -208,13 +208,13 @@ create_species_lookup <- function(channel,species=NULL,speciesType="NESPP3", ski
     speciesToFind <-  paste0("'",speciesToFind,"'",collapse=",")
     
     # look in species_itis_ne table and join with cfdbs.cfspp table by nespp4 to obtain other codes
-    sql1 <- paste0("select distinct COMMON_NAME, SCIENTIFIC_NAME, SPECIES_ITIS, NESPP4 from nefsc_garfo.cfdbs_species_itis_ne where SPECIES_ITIS in (",speciesToFind,") and NESPP4_FLAG = 1 order by NESPP4")
+    sql1 <- paste0("select distinct COMMON_NAME, SCIENTIFIC_NAME, SPECIES_ITIS, NESPP4 from cfdbs.species_itis_ne where SPECIES_ITIS in (",speciesToFind,") and NESPP4_FLAG = 1 order by NESPP4")
     speciesTable1 <- DBI::dbGetQuery(channel,sql1) %>% 
       dplyr::mutate(SCIENTIFIC_NAME = gsub("^\\s+|\\s+$", "",.data$SCIENTIFIC_NAME)) %>%
       dplyr::mutate(COMMON_NAME = gsub(", ",",",.data$COMMON_NAME))
       
         # compare species passed vs species found to get list of missing species
-    missing[["nefsc_garfo.cfdbs_species_itis_ne"]] <- tibble::enframe(setdiff(species,unique(speciesTable1$SPECIES_ITIS)),name=NULL,value="SPECIES_ITIS")
+    missing[["cfdbs.species_itis_ne"]] <- tibble::enframe(setdiff(species,unique(speciesTable1$SPECIES_ITIS)),name=NULL,value="SPECIES_ITIS")
 
     # use NESPP4 to select from cfdbs.cfspp
     # if any string exceeds 1000 items the sql query will fail. 
@@ -257,7 +257,7 @@ create_species_lookup <- function(channel,species=NULL,speciesType="NESPP3", ski
       dplyr::arrange(.data$NESPP3) %>%
       dplyr::as_tibble()
     
-    lookupOrder <- "nefsc_garfo.cfdbs_species_itis_ne (sql1) -> cfdbs.cfspp (sql2) -> svspp.svspecies_list (sql3)"
+    lookupOrder <- "cfdbs.species_itis_ne (sql1) -> cfdbs.cfspp (sql2) -> svspp.svspecies_list (sql3)"
     
     
   } else {

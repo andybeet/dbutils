@@ -35,7 +35,7 @@ split_sql_query_nespp3 <- function(channel,NESPP4s,maxItems=900) {
     # use NESPP4s to select from species_itis_ne
     nespp4s <- paste0("'",nespp4split,"'",collapse=",")
 
-    sqlpart <- paste0("select distinct COMMON_NAME, SCIENTIFIC_NAME, SPECIES_ITIS, NESPP4 from nefsc_garfo.cfdbs_species_itis_ne where NESPP4 in (",nespp4s,") and NESPP4_FLAG = 1 order by NESPP4") 
+    sqlpart <- paste0("select distinct COMMON_NAME, SCIENTIFIC_NAME, SPECIES_ITIS, NESPP4 from cfdbs.species_itis_ne where NESPP4 in (",nespp4s,") and NESPP4_FLAG = 1 order by NESPP4") 
     speciesTablepart <- DBI::dbGetQuery(channel,sqlpart)  |> 
       dplyr::mutate(SCIENTIFIC_NAME = gsub("^\\s+|\\s+$", "",.data$SCIENTIFIC_NAME)) |> 
       dplyr::mutate(COMMON_NAME = gsub(", ",",",.data$COMMON_NAME)) |> 

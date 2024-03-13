@@ -41,14 +41,14 @@ Combine  NESPP3, SVSPP3, species_itis, common name and scientific name.
 
 Three tables are used to compile information:
 
-cfdbs.cfspp and species_itis_ne and svdbs.svspecies_list. The resulting tables are then joined.
+cfdbs.cfspp and cfdbs.species_itis_ne and svdbs.svspecies_list. The resulting tables are then joined.
 
 The order in which these tables are accessed depends on \code{speciesType}. For example,
 \code{speciesType = "NESPP3"}
 
 1. cfdbs.cfssp is accessed and NESPP3, NESPP4, NAFOSPP, SVSPP are pulled.
 
-2. cfdbs.species_itis_ne (now nefsc_garfo.cfdbs_species_itis_ne) is accessed using the NESPP4 codes found in step 1 and COMMON_NAME, SCIENTIFIC_NAME, SPECIES_ITIS, NESPP4 are pulled.
+2. cfdbs.species_itis_ne is accessed using the NESPP4 codes found in step 1 and COMMON_NAME, SCIENTIFIC_NAME, SPECIES_ITIS, NESPP4 are pulled.
 
 3. svdbs.spsvspecies_list is accessed using the SCIENTIFIC_NAME codes found in step2 and COMNAME, SCINAME, SVSPP are pulled.
 
