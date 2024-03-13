@@ -113,11 +113,11 @@ to communicate with the database engine. (see <code><a href="connect_to_database
 
 
 <p>Three tables are used to compile information:</p>
-<p>cfdbs.cfspp and species_itis_ne and svdbs.svspecies_list. The resulting tables are then joined.</p>
+<p>cfdbs.cfspp and cfdbs.species_itis_ne and svdbs.svspecies_list. The resulting tables are then joined.</p>
 <p>The order in which these tables are accessed depends on <code>speciesType</code>. For example,
 <code>speciesType = "NESPP3"</code></p>
 <p>1. cfdbs.cfssp is accessed and NESPP3, NESPP4, NAFOSPP, SVSPP are pulled.</p>
-<p>2. cfdbs.species_itis_ne (now nefsc_garfo.cfdbs_species_itis_ne) is accessed using the NESPP4 codes found in step 1 and COMMON_NAME, SCIENTIFIC_NAME, SPECIES_ITIS, NESPP4 are pulled.</p>
+<p>2. cfdbs.species_itis_ne is accessed using the NESPP4 codes found in step 1 and COMMON_NAME, SCIENTIFIC_NAME, SPECIES_ITIS, NESPP4 are pulled.</p>
 <p>3. svdbs.spsvspecies_list is accessed using the SCIENTIFIC_NAME codes found in step2 and COMNAME, SCINAME, SVSPP are pulled.</p>
 <p>4. The tables are then joined</p>
     </div>
