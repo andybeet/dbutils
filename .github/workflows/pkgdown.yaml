@@ -22,7 +22,7 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - uses: r-lib/actions/setup-pandoc@v2
 
@@ -32,29 +32,33 @@ jobs:
 
       - name: install Oracle instant client
         run: |
-          sudo apt update
-          sudo apt-get install -y alien libaio1 libaio-dev
-          wget https://download.oracle.com/otn_software/linux/instantclient/2112000/oracle-instantclient-basic-21.12.0.0.0-1.el8.x86_64.rpm
-          wget https://download.oracle.com/otn_software/linux/instantclient/2112000/oracle-instantclient-devel-21.12.0.0.0-1.el8.x86_64.rpm
-          wget https://download.oracle.com/otn_software/linux/instantclient/2112000/oracle-instantclient-odbc-21.12.0.0.0-1.el8.x86_64.rpm
-          wget https://download.oracle.com/otn_software/linux/instantclient/2112000/oracle-instantclient-sqlplus-21.12.0.0.0-1.el8.x86_64.rpm
-          sudo alien -i oracle-instantclient-basic-21.12.0.0.0-1.el8.x86_64.rpm
-          sudo alien -i oracle-instantclient-devel-21.12.0.0.0-1.el8.x86_64.rpm
-          sudo alien -i oracle-instantclient-odbc-21.12.0.0.0-1.el8.x86_64.rpm
-          sudo alien -i oracle-instantclient-sqlplus-21.12.0.0.0-1.el8.x86_64.rpm
+           sudo apt-get update
+          sudo apt-get install -y build-essential g++ alien git rsync wget libaio1t64 libaio-dev libudunits2-dev unixodbc-dev\
+           && sudo ln -s /lib/x86_64-linux-gnu/libaio.so.1t64 /lib/x86_64-linux-gnu/libaio.so.1
+
+          wget -O oracle-instantclient-basic.rpm https://download.oracle.com/otn_software/linux/instantclient/2112000/oracle-instantclient-basic-21.12.0.0.0-1.el8.x86_64.rpm
+          wget -O oracle-instantclient-devel.rpm https://download.oracle.com/otn_software/linux/instantclient/2112000/oracle-instantclient-devel-21.12.0.0.0-1.el8.x86_64.rpm
+          wget -O oracle-instantclient-odbc.rpm https://download.oracle.com/otn_software/linux/instantclient/2112000/oracle-instantclient-odbc-21.12.0.0.0-1.el8.x86_64.rpm
+          wget -O oracle-instantclient-sqlplus.rpm https://download.oracle.com/otn_software/linux/instantclient/2112000/oracle-instantclient-sqlplus-21.12.0.0.0-1.el8.x86_64.rpm
+          sudo alien -i --scripts oracle-instantclient-basic.rpm
+          sudo alien -i oracle-instantclient-devel.rpm
+          sudo alien -i oracle-instantclient-odbc.rpm
 
 
           echo "export ORACLE_HOME=/usr/lib/oracle/21/client64" | sudo tee -a /etc/profile.d/oracle.sh
           echo "export TNS_ADMIN=/usr/lib/oracle/21/client64/lib/network/admin" | sudo tee -a /etc/profile.d/oracle.sh
           echo "export LD_LIBRARY_PATH=/usr/lib/oracle/21/client64/lib:${LD_LIBRARY_PATH}" | sudo tee -a /etc/profile.d/oracle.sh
           echo "export OCI_LIB=/usr/lib/oracle/21/client64/lib" | sudo tee -a /etc/profile.d/oracle.sh
-          echo "export OCI_INC=/usr/include/oracle/21/client64}" | sudo tee -a /etc/profile.d/oracle.sh
+          echo "export OCI_INC=/usr/include/oracle/21/client64" | sudo tee -a /etc/profile.d/oracle.sh
           echo "export PHP_DTRACE=yes" | sudo tee -a /etc/profile.d/oracle.sh
           echo "export EXTENSION_DIR=/usr/lib64/php/modules" | sudo tee -a /etc/profile.d/oracle.sh
-          echo "export PATH=\$ORACLE_HOME/bin:\$PATH" | sudo tee -a /etc/profile.d/oracle.sh          sudo chmod +x /etc/profile.d/oracle.sh
+          echo "export PATH=\$ORACLE_HOME/bin:\$PATH" | sudo tee -a /etc/profile.d/oracle.sh      
+          sudo chmod +x /etc/profile.d/oracle.sh
           source /etc/profile.d/oracle.sh
         shell: bash
-
+        env:
+          INCLUDE_DIR: /usr/include/odbc
+          LIB_DIR: /usr/lib/x86_64-linux-gnu
 
       - name: Install R packages
         run: |
@@ -73,7 +77,7 @@ jobs:
 
       - name: Deploy to GitHub pages 🚀
         if: github.event_name != 'pull_request'
-        uses: JamesIves/github-pages-deploy-action@v4.4.1
+        uses: JamesIves/github-pages-deploy-action@v4.8.0
         with:
           clean: false
           branch: gh-pages
