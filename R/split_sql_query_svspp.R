@@ -32,7 +32,7 @@ split_sql_query_svspp <- function(channel, NESPP4s, maxItems = 900) {
     nespp4s <- paste0("'", nespp4split, "'", collapse = ",")
 
     sqlpart <- paste0(
-      "select distinct NESPP3, NESPP4, NAFOSPP, SVSPP from cfdbs.cfspp where NESPP4  in (",
+      "select distinct NESPP3, NESPP4, NAFOSPP, SVSPP from NEFSC_GARFO.cfdbs_cfspp where NESPP4  in (",
       nespp4s,
       ") order by NESPP4"
     )
