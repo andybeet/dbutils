@@ -19,26 +19,35 @@
 #' }
 #'@export
 
-
-
-createStringSpecies <- function(itemName,chosenItem,convertToCharacter,numChars) {
-
-  nZeros <- numChars-nchar(chosenItem)
-  if (is.numeric(chosenItem) && (convertToCharacter==TRUE)) { # need to convert numeric to character for sql
-    str <- sprintf(paste0("%0",numChars,"d"),chosenItem)
-    str <- paste0("'", str, "%'", collapse=", ")
-    itemStr <-  paste0(" (",itemName," like (",str,"))")
-  } else if (is.numeric(chosenItem) && (convertToCharacter==FALSE)) {
-    itemStr <-  paste0(" (",itemName," like (",toString(paste0(chosenItem,"%")),"))")
-  } else { # not numeric
-    if (tolower(chosenItem)=="all"){
-      itemStr <-  NULL
+createStringSpecies <- function(
+  itemName,
+  chosenItem,
+  convertToCharacter,
+  numChars
+) {
+  nZeros <- numChars - nchar(chosenItem)
+  if (is.numeric(chosenItem) && (convertToCharacter == TRUE)) {
+    # need to convert numeric to character for sql
+    str <- sprintf(paste0("%0", numChars, "d"), chosenItem)
+    str <- paste0("'", str, "%'", collapse = ", ")
+    itemStr <- paste0(" (", itemName, " like (", str, "))")
+  } else if (is.numeric(chosenItem) && (convertToCharacter == FALSE)) {
+    itemStr <- paste0(
+      " (",
+      itemName,
+      " like (",
+      toString(paste0(chosenItem, "%")),
+      "))"
+    )
+  } else {
+    # not numeric
+    if (tolower(chosenItem) == "all") {
+      itemStr <- NULL
     } else {
-      str <- paste0("'",rep(0,nZeros), chosenItem, "%'", collapse=", ")
-      itemStr <-  paste0(" (",itemName," like (",str,"))")
+      str <- paste0("'", rep(0, nZeros), chosenItem, "%'", collapse = ", ")
+      itemStr <- paste0(" (", itemName, " like (", str, "))")
       #stop(paste0("Not coded for yet -- createString:",itemName," with ",chosenItem))
     }
-
   }
   return(itemStr)
 }

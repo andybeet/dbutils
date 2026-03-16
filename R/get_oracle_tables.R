@@ -5,7 +5,7 @@
 #'
 #' @param channel DBI Object. Inherited from \link[DBI]{DBIConnection-class}. This object is used to connect
 #' to communicate with the database engine. (see \code{\link[dbutils]{connect_to_database}})
-#' @param owner character string. The name of the tables owner. Used to filter tables by a specific owner 
+#' @param owner character string. The name of the tables owner. Used to filter tables by a specific owner
 #'
 #' @return Data frame (n x 2)
 #'
@@ -37,20 +37,19 @@
 #'
 #
 
-get_oracle_tables <- function(channel,owner=NULL){
-  
+get_oracle_tables <- function(channel, owner = NULL) {
   # creates the sql based on user input
-  if(is.null(owner)) {
+  if (is.null(owner)) {
     sqlStatement <- "SELECT table_name,owner FROM all_tables ORDER by owner"
   } else {
-    sqlStatement <- paste0("SELECT table_name,owner FROM all_tables WHERE owner = '",owner,"'")
+    sqlStatement <- paste0(
+      "SELECT table_name,owner FROM all_tables WHERE owner = '",
+      owner,
+      "'"
+    )
   }
-  
-  query <- DBI::dbGetQuery(channel,sqlStatement)
-  
-  return (list(data=dplyr::as_tibble(query),sql=sqlStatement))
-  
+
+  query <- DBI::dbGetQuery(channel, sqlStatement)
+
+  return(list(data = dplyr::as_tibble(query), sql = sqlStatement))
 }
-
-
-
