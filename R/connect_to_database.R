@@ -11,9 +11,9 @@
 #'
 #' @param server Character string. Name of the server
 #' @param uid  Character string. Username of person with permissions
-#' @param quiet Boolean. Suppress successful connection message. 
+#' @param quiet Boolean. Suppress successful connection message.
 #' @param ROracle Boolean. If using ROracle package driver to connect to db (Default = T)
-#' 
+#'
 #' @return Object inherited from \link[DBI]{DBIConnection-class}. This object is used to connect
 #' to communicate with the database engine. (see \code{\link{connect_to_database}})
 #'
@@ -27,45 +27,71 @@
 #'}
 #' @export
 
-connect_to_database  <-  function(server,uid,quiet=F,ROracle=T){
+connect_to_database <- function(server, uid, quiet = F, ROracle = T) {
   # calls function for user to enter password
-  pwd <- getPass::getPass(msg=paste0("Enter the password for user ",uid," on server (",server,"):"),forcemask = FALSE)
-  
+  pwd <- getPass::getPass(
+    msg = paste0(
+      "Enter the password for user ",
+      uid,
+      " on server (",
+      server,
+      "):"
+    ),
+    forcemask = FALSE
+  )
 
   # connects to DB and catches errors and warnings
-   chan <- tryCatch(
-      {
-        if (ROracle) {
-          driver <- ROracle::Oracle()
-          chan <- ROracle::dbConnect(driver, dbname=server,username=uid,password=pwd)
-        } else {
-          chan <- DBI::dbConnect(odbc::odbc(), dsn=server,uid=uid,pwd=pwd, timeout = 10)
-        }
-        
-      }, warning=function(w) {
-        if (grepl("login denied",w)) {message("login to server failed - Check username and password")}
-        if (grepl("locked",w)) {message("logon to server failed - Account may be locked")}
-        message(paste0("Can not Connect to Database: ",server))
-        return(NA)
-      }, error=function(e) {
-        message(paste0("Terminal error: ",e))
-        return(NA)
-      }, finally = {
-
+  chan <- tryCatch(
+    {
+      if (ROracle) {
+        driver <- ROracle::Oracle()
+        chan <- ROracle::dbConnect(
+          driver,
+          dbname = server,
+          username = uid,
+          password = pwd
+        )
+      } else {
+        chan <- DBI::dbConnect(
+          odbc::odbc(),
+          dsn = server,
+          uid = uid,
+          pwd = pwd,
+          timeout = 10
+        )
       }
-    )
-   
-   
-     if (isS4(chan) & (!quiet)){
-       message(paste0("Successfully connected to Database: ",server))
-     } else if (isS4(chan) & (quiet)) {
-       # no message
-     } else {
-       message(paste0("NOT sucessfully connected to Database: ",server,". You attemptted to connect using username: ",uid,". Three incorrect password attempts will lock your account and you will need DMS to reset your password."))
-     }
-   
-   
+    },
+    warning = function(w) {
+      if (grepl("login denied", w)) {
+        message("login to server failed - Check username and password")
+      }
+      if (grepl("locked", w)) {
+        message("logon to server failed - Account may be locked")
+      }
+      message(paste0("Can not Connect to Database: ", server))
+      return(NA)
+    },
+    error = function(e) {
+      message(paste0("Terminal error: ", e))
+      return(NA)
+    },
+    finally = {}
+  )
+
+  if (isS4(chan) & (!quiet)) {
+    message(paste0("Successfully connected to Database: ", server))
+  } else if (isS4(chan) & (quiet)) {
+    # no message
+  } else {
+    message(paste0(
+      "NOT sucessfully connected to Database: ",
+      server,
+      ". You attemptted to connect using username: ",
+      uid,
+      ". Three incorrect password attempts will lock your account and you will need DMS to reset your password."
+    ))
+  }
+
   # returns connection object
   return(chan)
 }
-
