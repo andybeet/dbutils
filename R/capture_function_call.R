@@ -13,10 +13,10 @@
 capture_function_call <- function(...) {
   call <- base::evalq(base::match.call(expand.dots = FALSE), parent.frame(1))
   formals <- base::evalq(formals(), parent.frame(1))
-  
-  for(i in base::setdiff(names(formals), names(call))){
-    call[i] <- list( formals[[i]] )
+
+  for (i in base::setdiff(names(formals), names(call))) {
+    call[i] <- list(formals[[i]])
   }
-  
+
   return(base::match.call(base::sys.function(base::sys.parent()), call))
 }
